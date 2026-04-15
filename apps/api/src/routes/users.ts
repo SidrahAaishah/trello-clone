@@ -6,7 +6,7 @@ const router = Router();
 
 // Who am I (default user).
 router.get('/me', async (req, res) => {
-  const user = await prisma.user.findUnique({ where: { id: req.userId } });
+  const user = await prisma.user.findUnique({ where: { id: (req as any).userId } });
   if (!user) return res.status(500).json({ error: { code: 'NO_USER', message: 'Default user missing' } });
   res.json({ user: mapMember(user) });
 });

@@ -25,9 +25,4 @@ services:
       - key: DEFAULT_USER_ID
         value: user_default
     autoDeploy: true
-
-databases:
-  - name: trello-clone-db
-    plan: free
-    databaseName: trello_clone
-    user: trello
+    
