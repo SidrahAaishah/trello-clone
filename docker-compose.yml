@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: trello-clone-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trello
+      POSTGRES_PASSWORD: trello
+      POSTGRES_DB: trello_clone
+    ports:
+      - "5432:5432"
+    volumes:
+      - trello_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trello -d trello_clone"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  trello_db_data:

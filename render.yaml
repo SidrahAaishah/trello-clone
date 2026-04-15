@@ -1,0 +1,33 @@
+# Render Blueprint for the Trello Clone API + managed PostgreSQL.
+# Deploy from the repo root: Render picks this file up automatically when you
+# create a new "Blueprint" service.
+services:
+  - type: web
+    name: trello-clone-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "4000"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trello-clone-db
+          property: connectionString
+      - key: CORS_ORIGIN
+        # Set this to your deployed Vercel URL, e.g. https://trello-clone.vercel.app
+        # Multiple origins allowed, comma separated.
+        sync: false
+      - key: DEFAULT_USER_ID
+        value: user_default
+    autoDeploy: true
+
+databases:
+  - name: trello-clone-db
+    plan: free
+    databaseName: trello_clone
+    user: trello

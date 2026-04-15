@@ -1,0 +1,27 @@
+{
+  "name": "trello-clone",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "shared:build": "pnpm --filter @trello-clone/shared build",
+    "predev": "pnpm shared:build",
+    "dev": "pnpm -r --parallel --filter \"./apps/*\" --filter \"@trello-clone/shared\" dev",
+    "dev:api": "pnpm shared:build && pnpm --filter api dev",
+    "dev:web": "pnpm shared:build && pnpm --filter web dev",
+    "prebuild": "pnpm shared:build",
+    "build": "pnpm -r --filter \"./apps/*\" build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "db:migrate": "pnpm --filter api prisma migrate dev",
+    "db:migrate:deploy": "pnpm --filter api prisma migrate deploy",
+    "db:seed": "pnpm --filter api db:seed",
+    "db:reset": "pnpm --filter api prisma migrate reset --force",
+    "db:studio": "pnpm --filter api prisma studio",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  }
+}
