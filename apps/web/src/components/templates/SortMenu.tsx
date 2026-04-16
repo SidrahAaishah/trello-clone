@@ -21,7 +21,7 @@ const OPTIONS: { value: TemplateSort; label: string; hint: string }[] = [
  * the chosen order is respected end-to-end.
  */
 export function SortMenu({ value, onChange }: Props) {
-  const current = OPTIONS.find((o) => o.value === value) ?? OPTIONS[0];
+  const current = OPTIONS.find((o) => o.value === value) ?? OPTIONS[0]!;
 
   return (
     <DropdownMenu.Root>

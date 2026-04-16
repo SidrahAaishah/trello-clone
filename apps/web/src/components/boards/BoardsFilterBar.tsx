@@ -158,7 +158,7 @@ function FilterDropdown<T extends string>({
   value,
   onChange,
 }: FilterDropdownProps<T>) {
-  const current = options.find((o) => o.value === value) ?? options[0];
+  const current = options.find((o) => o.value === value) ?? options[0]!;
 
   return (
     <DropdownMenu.Root>
