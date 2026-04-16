@@ -69,8 +69,7 @@ export async function instantiateTemplate(
   //    with the template's structural skeleton is still useful).
   const sortedLists = template.lists.slice().sort((a, b) => a.position - b.position);
 
-  for (let li = 0; li < sortedLists.length; li++) {
-    const tList = sortedLists[li];
+  for (const [li, tList] of sortedLists.entries()) {
     const list = await tx.list.create({
       data: {
         boardId: board.id,
@@ -83,9 +82,7 @@ export async function instantiateTemplate(
 
     const sortedCards = tList.cards.slice().sort((a, b) => a.position - b.position);
 
-    for (let ci = 0; ci < sortedCards.length; ci++) {
-      const tCard = sortedCards[ci];
-
+    for (const [ci, tCard] of sortedCards.entries()) {
       const card = await tx.card.create({
         data: {
           boardId: board.id,
@@ -109,8 +106,7 @@ export async function instantiateTemplate(
         .slice()
         .sort((a, b) => a.position - b.position);
 
-      for (let chi = 0; chi < sortedChecklists.length; chi++) {
-        const tChecklist = sortedChecklists[chi];
+      for (const [chi, tChecklist] of sortedChecklists.entries()) {
         const checklist = await tx.checklist.create({
           data: {
             cardId: card.id,
