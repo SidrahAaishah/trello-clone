@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
@@ -9,10 +10,12 @@ import { dueBadgeClasses, dueState, formatDueShort } from '@/utils/due';
 
 interface Props {
   card: CardSummary;
-  onClick: () => void;
+  // Accept cardId so the parent can pass a stable useCallback reference
+  // instead of a new arrow function per render — enables React.memo to skip re-renders.
+  onClick: (cardId: string) => void;
 }
 
-export function CardTile({ card, onClick }: Props) {
+function CardTileInner({ card, onClick }: Props) {
   const sortable = useSortable({
     id: card.id,
     data: { type: 'card', cardId: card.id, listId: card.listId },
@@ -22,6 +25,9 @@ export function CardTile({ card, onClick }: Props) {
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
+    // Required for dnd-kit touch handling: tells the browser to let dnd-kit
+    // own the touch event instead of trying to scroll the page.
+    touchAction: 'none' as const,
   };
 
   const due = dueState(card.dueAt, card.dueComplete);
@@ -37,14 +43,14 @@ export function CardTile({ card, onClick }: Props) {
         // Don't open the modal during a drag gesture.
         if (isDragging) return;
         e.stopPropagation();
-        onClick();
+        onClick(card.id);
       }}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onClick();
+          onClick(card.id);
         }
       }}
       className={clsx(
@@ -132,3 +138,8 @@ export function CardTile({ card, onClick }: Props) {
     </div>
   );
 }
+
+// Memoized: only re-renders when `card` object reference or `onClick` reference changes.
+// With identity-preserving state updates in BoardCanvas, cards that didn't move
+// keep their object references → zero re-renders for unaffected cards during drag.
+export const CardTile = memo(CardTileInner);

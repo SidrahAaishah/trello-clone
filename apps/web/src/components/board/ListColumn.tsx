@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
@@ -26,8 +26,10 @@ interface Props {
   visibleCards: CardSummary[];
 }
 
-export function ListColumn({ boardId, list, visibleCards }: Props) {
+function ListColumnInner({ boardId, list, visibleCards }: Props) {
   const openCard = useUI((s) => s.openCard);
+  // Stable callback — same reference across renders so CardTile.memo can skip re-renders.
+  const handleCardClick = useCallback((cardId: string) => openCard(cardId), [openCard]);
   const createCard = useCreateCard(boardId);
   const updateList = useUpdateList(boardId);
   const [editing, setEditing] = useState(false);
@@ -45,6 +47,7 @@ export function ListColumn({ boardId, list, visibleCards }: Props) {
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
+    touchAction: 'none' as const,
   };
 
   const commitTitle = async () => {
@@ -165,7 +168,7 @@ export function ListColumn({ boardId, list, visibleCards }: Props) {
       <div className="px-2 pb-1 space-y-2 overflow-y-auto list-scroll">
         <SortableContext items={visibleCards.map((c) => c.id)} strategy={verticalListSortingStrategy}>
           {visibleCards.map((card) => (
-            <CardTile key={card.id} card={card} onClick={() => openCard(card.id)} />
+            <CardTile key={card.id} card={card} onClick={handleCardClick} />
           ))}
         </SortableContext>
       </div>
@@ -174,3 +177,8 @@ export function ListColumn({ boardId, list, visibleCards }: Props) {
     </section>
   );
 }
+
+// Memoized: only re-renders when boardId, list, or visibleCards reference changes.
+// BoardCanvas's identity-preserving onDragOver ensures only the two affected lists
+// (source + target) get new object references — all other columns stay frozen.
+export const ListColumn = memo(ListColumnInner);
