@@ -13,7 +13,7 @@ export const errorSchema = z.object({
 export type ApiError = z.infer<typeof errorSchema>;
 
 export const backgroundSchema = z.object({
-  type: z.enum(['color', 'image']),
+  type: z.enum(['color', 'image', 'gradient']),
   value: z.string().min(1),
 });
 export type Background = z.infer<typeof backgroundSchema>;

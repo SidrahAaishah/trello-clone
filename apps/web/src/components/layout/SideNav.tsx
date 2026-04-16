@@ -31,7 +31,7 @@ export function SideNav() {
 
       <nav className="flex-grow">
         <NavItem to="/boards" icon="dashboard" label="Boards" onClick={() => setMobileNavOpen(false)} />
-        <NavItem to="/boards" icon="dashboard_customize" label="Templates" onClick={() => setMobileNavOpen(false)} />
+        <NavItem to="/templates" icon="dashboard_customize" label="Templates" onClick={() => setMobileNavOpen(false)} />
         <NavItem to="/boards" icon="home" label="Home" onClick={() => setMobileNavOpen(false)} />
 
         {starred.length > 0 && (
@@ -60,7 +60,11 @@ export function SideNav() {
                       backgroundColor:
                         b.background.type === 'color' ? b.background.value : undefined,
                       backgroundImage:
-                        b.background.type === 'image' ? `url(${b.background.value})` : undefined,
+                        b.background.type === 'image'
+                          ? `url(${b.background.value})`
+                          : b.background.type === 'gradient'
+                            ? b.background.value
+                            : undefined,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                     }}

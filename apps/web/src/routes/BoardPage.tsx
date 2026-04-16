@@ -76,7 +76,9 @@ export default function BoardPage() {
       ? { backgroundColor: bg.value }
       : bg?.type === 'image'
         ? { backgroundImage: `url(${bg.value})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-        : { backgroundColor: '#0079BF' };
+        : bg?.type === 'gradient'
+          ? { backgroundImage: bg.value }
+          : { backgroundColor: '#0079BF' };
 
   return (
     <div className="flex-1 flex flex-col min-h-0" style={style}>

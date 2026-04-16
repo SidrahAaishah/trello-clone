@@ -2,23 +2,29 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
-import { BOARD_BG_PRESETS } from '@trello-clone/shared';
+import { BOARD_BG_PRESETS, BOARD_BG_IMAGES, type Background } from '@trello-clone/shared';
 import { useUI } from '@/stores/ui';
 import { useCreateBoard } from '@/hooks/useBoards';
 import { Icon } from '@/components/common/Icon';
 import toast from 'react-hot-toast';
 
+type BgTab = 'colors' | 'photos';
+
+const DEFAULT_BG: Background = { type: 'image', value: BOARD_BG_IMAGES[0] };
+
 export function CreateBoardDialog() {
   const open = useUI((s) => s.createBoardOpen);
   const setOpen = useUI((s) => s.setCreateBoardOpen);
   const [title, setTitle] = useState('');
-  const [bg, setBg] = useState<string>(BOARD_BG_PRESETS[0]);
+  const [bg, setBg] = useState<Background>(DEFAULT_BG);
+  const [tab, setTab] = useState<BgTab>('photos');
   const createBoard = useCreateBoard();
   const nav = useNavigate();
 
   const reset = () => {
     setTitle('');
-    setBg(BOARD_BG_PRESETS[0]);
+    setBg(DEFAULT_BG);
+    setTab('photos');
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -27,7 +33,7 @@ export function CreateBoardDialog() {
     try {
       const board = await createBoard.mutateAsync({
         title: title.trim(),
-        background: { type: 'color', value: bg },
+        background: bg,
       });
       toast.success('Board created');
       setOpen(false);
@@ -37,6 +43,17 @@ export function CreateBoardDialog() {
       toast.error((err as Error).message);
     }
   };
+
+  const previewStyle: React.CSSProperties =
+    bg.type === 'color'
+      ? { backgroundColor: bg.value }
+      : bg.type === 'gradient'
+        ? { backgroundImage: bg.value }
+        : {
+            backgroundImage: `url(${bg.value})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          };
 
   return (
     <Dialog.Root
@@ -61,7 +78,7 @@ export function CreateBoardDialog() {
           <div
             className="mx-auto rounded-md mb-4 flex items-end p-3"
             style={{
-              backgroundColor: bg,
+              ...previewStyle,
               height: 120,
               width: '90%',
               boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.05)',
@@ -96,22 +113,77 @@ export function CreateBoardDialog() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-on-surface mb-1">Background</label>
-              <div className="flex flex-wrap gap-2">
-                {BOARD_BG_PRESETS.map((c) => (
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-semibold text-on-surface">
+                  Background
+                </label>
+                <div className="flex bg-surface-container-low rounded p-0.5 text-xs font-medium">
                   <button
-                    key={c}
                     type="button"
-                    onClick={() => setBg(c)}
+                    onClick={() => setTab('photos')}
                     className={clsx(
-                      'w-10 h-8 rounded ring-offset-2 transition-[box-shadow]',
-                      bg === c ? 'ring-2 ring-primary' : 'hover:opacity-90',
+                      'px-2.5 py-1 rounded transition-colors',
+                      tab === 'photos'
+                        ? 'bg-white text-on-surface shadow-sm'
+                        : 'text-on-surface-variant hover:text-on-surface',
                     )}
-                    style={{ backgroundColor: c }}
-                    aria-label={`Background ${c}`}
-                  />
-                ))}
+                  >
+                    Photos
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTab('colors')}
+                    className={clsx(
+                      'px-2.5 py-1 rounded transition-colors',
+                      tab === 'colors'
+                        ? 'bg-white text-on-surface shadow-sm'
+                        : 'text-on-surface-variant hover:text-on-surface',
+                    )}
+                  >
+                    Colors
+                  </button>
+                </div>
               </div>
+
+              {tab === 'colors' ? (
+                <div className="flex flex-wrap gap-2">
+                  {BOARD_BG_PRESETS.map((c) => {
+                    const selected = bg.type === 'color' && bg.value === c;
+                    return (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setBg({ type: 'color', value: c })}
+                        className={clsx(
+                          'w-10 h-8 rounded ring-offset-2 transition-[box-shadow]',
+                          selected ? 'ring-2 ring-primary' : 'hover:opacity-90',
+                        )}
+                        style={{ backgroundColor: c }}
+                        aria-label={`Background ${c}`}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="grid grid-cols-4 gap-2">
+                  {BOARD_BG_IMAGES.map((url) => {
+                    const selected = bg.type === 'image' && bg.value === url;
+                    return (
+                      <button
+                        key={url}
+                        type="button"
+                        onClick={() => setBg({ type: 'image', value: url })}
+                        className={clsx(
+                          'h-12 rounded bg-cover bg-center ring-offset-2 transition-[box-shadow]',
+                          selected ? 'ring-2 ring-primary' : 'hover:opacity-90',
+                        )}
+                        style={{ backgroundImage: `url(${url})` }}
+                        aria-label="Photo background"
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <button

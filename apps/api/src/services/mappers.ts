@@ -35,7 +35,10 @@ export const mapMember = (u: PUser): Member => ({
 export const mapBoard = (b: PBoard): Board => ({
   id: b.id,
   title: b.title,
-  background: { type: b.backgroundType as 'color' | 'image', value: b.backgroundValue },
+  background: {
+    type: b.backgroundType as 'color' | 'image' | 'gradient',
+    value: b.backgroundValue,
+  },
   ownerId: b.ownerId,
   starred: b.starred,
   archivedAt: b.archivedAt?.toISOString() ?? null,
