@@ -16,6 +16,7 @@ import commentsRouter from './routes/comments.js';
 import activitiesRouter from './routes/activities.js';
 import searchRouter from './routes/search.js';
 import usersRouter from './routes/users.js';
+import templatesRouter from './routes/templates.js';
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use('/api', cardsRouter); // mounts /lists/:listId/cards and /cards/:cardId/
 app.use('/api', checklistsRouter); // mounts /cards/:cardId/checklists and /checklist-items/*
 app.use('/api', commentsRouter); // /cards/:cardId/comments and /comments/:id
 app.use('/api/search', searchRouter);
+app.use('/api/templates', templatesRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

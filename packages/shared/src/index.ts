@@ -10,3 +10,4 @@ export * from './schemas/checklist.js';
 export * from './schemas/comment.js';
 export * from './schemas/activity.js';
 export * from './schemas/search.js';
+export * from './schemas/template.js';
