@@ -1,4 +1,4 @@
-# Render Blueprint for the Trello Clone API + managed PostgreSQL.
+# Render Blueprint for the Trello Clone API + Neon PostgreSQL.
 # Deploy from the repo root: Render picks this file up automatically when you
 # create a new "Blueprint" service.
 services:
@@ -15,9 +15,8 @@ services:
       - key: PORT
         value: "4000"
       - key: DATABASE_URL
-        fromDatabase:
-          name: trello-clone-db
-          property: connectionString
+        # sync: false tells Render to leave this blank so you can paste your Neon URL in the dashboard
+        sync: false
       - key: CORS_ORIGIN
         # Set this to your deployed Vercel URL, e.g. https://trello-clone.vercel.app
         # Multiple origins allowed, comma separated.
@@ -25,9 +24,3 @@ services:
       - key: DEFAULT_USER_ID
         value: user_default
     autoDeploy: true
-
-databases:
-  - name: trello-clone-db
-    plan: free
-    databaseName: trello_clone
-    user: trello
