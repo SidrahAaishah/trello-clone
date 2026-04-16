@@ -2,11 +2,6 @@ import type { NextFunction, Request, Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { HttpError } from '../lib/errors.js';
 
-declare module 'express-serve-static-core' {
-  interface Request {
-    userId: string;
-  }
-}
 
 // Per assignment we have a single default user — no auth required.
 // We still funnel all writes through a resolved userId so future auth is a drop-in.

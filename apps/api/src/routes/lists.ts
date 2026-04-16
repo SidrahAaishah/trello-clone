@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import {
   createListSchema,
   updateListSchema,
@@ -19,7 +19,7 @@ import { logActivity } from '../services/activity.js';
 const router = Router({ mergeParams: true });
 
 // GET /boards/:boardId/lists — include cards by default for the board page.
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request<any>, res: Response) => {
   const boardId = req.params.boardId!;
   const lists = await prisma.list.findMany({
     where: { boardId, archivedAt: null },
@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req: Request<any>, res: Response) => {
   const boardId = req.params.boardId!;
   const input = createListSchema.parse(req.body);
 
@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
   res.status(201).json({ list: mapList(list) });
 });
 
-router.patch('/:listId', async (req, res) => {
+router.patch('/:listId', async (req: Request<any>, res: Response) => {
   const input = updateListSchema.parse(req.body);
   const existing = await prisma.list.findFirst({
     where: { id: req.params.listId, boardId: req.params.boardId },
@@ -98,7 +98,7 @@ router.patch('/:listId', async (req, res) => {
 });
 
 // Reorder list: target is a float position. Caller computes prev/next average.
-router.patch('/:listId/position', async (req, res) => {
+router.patch('/:listId/position', async (req: Request<any>, res: Response) => {
   const { position } = reorderListSchema.parse(req.body);
   const existing = await prisma.list.findFirst({
     where: { id: req.params.listId, boardId: req.params.boardId },

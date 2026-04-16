@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import {
   createLabelSchema,
   updateLabelSchema,
@@ -10,7 +10,7 @@ import { mapLabel } from '../services/mappers.js';
 const router = Router({ mergeParams: true });
 
 // GET /boards/:boardId/labels
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request<any>, res: Response) => {
   const labels = await prisma.label.findMany({
     where: { boardId: req.params.boardId },
     orderBy: { createdAt: 'asc' },
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
   res.json({ labels: labels.map(mapLabel) });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req: Request<any>, res: Response) => {
   const input = createLabelSchema.parse(req.body);
   const label = await prisma.label.create({
     data: { boardId: req.params.boardId!, name: input.name, color: input.color },
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
   res.status(201).json({ label: mapLabel(label) });
 });
 
-router.patch('/:labelId', async (req, res) => {
+router.patch('/:labelId', async (req: Request<any>, res: Response) => {
   const input = updateLabelSchema.parse(req.body);
   const existing = await prisma.label.findFirst({
     where: { id: req.params.labelId, boardId: req.params.boardId },
@@ -39,7 +39,7 @@ router.patch('/:labelId', async (req, res) => {
   res.json({ label: mapLabel(label) });
 });
 
-router.delete('/:labelId', async (req, res) => {
+router.delete('/:labelId', async (req: Request<any>, res: Response) => {
   const existing = await prisma.label.findFirst({
     where: { id: req.params.labelId, boardId: req.params.boardId },
   });

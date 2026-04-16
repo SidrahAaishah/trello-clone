@@ -121,7 +121,7 @@ export function CardTile({ card, onClick }: Props) {
             </div>
             {card.members.length > 0 && (
               card.members.length === 1 ? (
-                <Avatar member={card.members[0]} size={24} />
+                <Avatar member={card.members[0]!} size={24} />
               ) : (
                 <AvatarStack members={card.members} size={22} max={3} ring="ring-2 ring-white" />
               )
