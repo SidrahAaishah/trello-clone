@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Board - Trello Editorial</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#a76500",
+                        "on-tertiary-fixed": "#2c1700",
+                        "error": "#ba1a1a",
+                        "surface-container": "#e8edff",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-variant": "#d7e2ff",
+                        "secondary-fixed-dim": "#7edc6a",
+                        "inverse-surface": "#1d3052",
+                        "background": "#f9f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#041b3c",
+                        "on-secondary-fixed": "#002200",
+                        "secondary-fixed": "#99f983",
+                        "on-surface-variant": "#404751",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#00629d",
+                        "on-background": "#041b3c",
+                        "outline": "#707882",
+                        "surface-container-low": "#f1f3ff",
+                        "surface-dim": "#cadaff",
+                        "on-primary-fixed": "#001d33",
+                        "surface-bright": "#f9f9ff",
+                        "inverse-primary": "#98cbff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#d7e2ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c0c7d2",
+                        "inverse-on-surface": "#edf0ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#97f680",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-fixed-variant": "#025300",
+                        "secondary": "#066e02",
+                        "primary": "#005f98",
+                        "on-primary-fixed-variant": "#004a77",
+                        "on-primary-container": "#fbfbff",
+                        "tertiary-fixed-dim": "#ffb86b",
+                        "tertiary-fixed": "#ffdcbc",
+                        "surface-container-high": "#e0e8ff",
+                        "surface": "#f9f9ff",
+                        "on-secondary-container": "#107308",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#683d00",
+                        "tertiary": "#854f00",
+                        "primary-fixed-dim": "#98cbff",
+                        "primary-container": "#0079bf"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    "boxShadow": {
+                        "modal": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(9, 30, 66, 0.08)"
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface">
+<!-- Top Navigation Bar (Shared Component) -->
+<nav class="flex justify-between items-center w-full px-4 h-12 fixed top-0 z-50 bg-[#0079BF] dark:bg-slate-900 shadow-sm">
+<div class="flex items-center gap-6">
+<span class="text-xl font-black text-white tracking-tighter">Trello</span>
+<div class="hidden md:flex items-center gap-4 text-sm font-medium">
+<a class="text-white/80 hover:text-white hover:bg-white/20 px-2 py-1 transition-colors rounded" href="#">Workspaces</a>
+<a class="text-white/80 hover:text-white hover:bg-white/20 px-2 py-1 transition-colors rounded" href="#">Recent</a>
+<a class="text-white/80 hover:text-white hover:bg-white/20 px-2 py-1 transition-colors rounded" href="#">Starred</a>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-white/20 text-white px-3 py-1 rounded text-sm font-bold hover:bg-white/30 transition-colors">Create</button>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-white cursor-pointer hover:bg-white/20 p-1 rounded">notifications</span>
+<span class="material-symbols-outlined text-white cursor-pointer hover:bg-white/20 p-1 rounded">help</span>
+</div>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border-2 border-white/20" data-alt="professional portrait of a creative professional with a friendly expression in a modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPDGU_j6J6DaOa4v94UYj-grqLhOfJrgOqXwpfzP6Bbx4O7sIY7PGrcH_m2nM_sOxpCulmxI0W69QzEw5xUs1MNYDW-7dtBFL69GXUOAedBeC9hQL_Jh3F9RugqocC-NLov-qVavO2bxbyv6XwGjX0TKWutL7ssbzcG-oPZ0pN6hGNBktNdIjZWKIpugJpnmQyyCAmundBppyJDTYU6pmtBh1KJ4gVLdiad6cYKdHyeL2rjlmN_meAGHhl9tJ2HDrrcKuYYy3utBU"/>
+</div>
+</nav>
+<!-- Boards Landing Content (Underlay - Dimmed) -->
+<main class="pt-16 pl-[260px] min-h-screen p-8 opacity-40 grayscale-[20%]">
+<header class="mb-10">
+<h1 class="text-4xl font-extrabold tracking-tight mb-2">Your Boards</h1>
+<p class="text-on-surface-variant">Manage your workspace projects and team collaborations.</p>
+</header>
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Board Cards -->
+<div class="h-32 bg-primary-container rounded-lg p-4 text-white relative group cursor-pointer overflow-hidden">
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+<span class="font-bold relative z-10">Project Alpha</span>
+<span class="material-symbols-outlined absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">star</span>
+</div>
+<div class="h-32 bg-secondary rounded-lg p-4 text-white relative group cursor-pointer overflow-hidden">
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+<span class="font-bold relative z-10">Design System</span>
+<span class="material-symbols-outlined absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">star</span>
+</div>
+<div class="h-32 bg-tertiary-container rounded-lg p-4 text-white relative group cursor-pointer overflow-hidden">
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+<span class="font-bold relative z-10">Q4 Roadmap</span>
+<span class="material-symbols-outlined absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">star</span>
+</div>
+<div class="h-32 bg-surface-container-highest border-2 border-dashed border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg cursor-pointer">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-3xl">add</span>
+<span class="text-sm font-medium">Create new board</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Side Navigation Bar (Shared Component) -->
+<aside class="fixed left-0 top-12 bottom-0 w-[260px] flex flex-col p-3 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+<div class="flex items-center gap-3 px-3 py-4 mb-4">
+<div class="w-10 h-10 bg-primary-container rounded-md flex items-center justify-center text-white font-black">W</div>
+<div>
+<div class="text-sm font-bold text-on-surface">Workspace Name</div>
+<div class="text-xs text-on-surface-variant">Free Plan</div>
+</div>
+</div>
+<nav class="flex-1">
+<div class="px-3 py-2 my-1 flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 text-[#005f98] dark:text-blue-200 font-semibold rounded-md">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Boards</span>
+</div>
+<div class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span>Templates</span>
+</div>
+<div class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</div>
+</nav>
+<footer class="border-t border-slate-100 pt-4">
+<div class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</div>
+<div class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all">
+<span class="material-symbols-outlined">group</span>
+<span>Members</span>
+</div>
+</footer>
+</aside>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-on-surface/50 backdrop-blur-sm">
+<!-- Create Board Dialog -->
+<section class="w-[420px] bg-surface-container-lowest rounded-lg shadow-modal overflow-hidden flex flex-col">
+<!-- Modal Header / Live Preview -->
+<div class="relative h-[160px] flex items-center justify-center bg-surface-container-low p-6">
+<div class="w-[240px] h-[120px] rounded-lg shadow-lg relative overflow-hidden flex items-center justify-center">
+<img alt="Board Preview" class="absolute inset-0 w-full h-full object-cover" data-alt="serene high-altitude mountain landscape with soft teal and blue atmospheric lighting at twilight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsp0E5zioAPaZ5p6fE5ygX6Jt1BxHalWc5QwmdHA_L0CI-h3m7LTm8RMl17p94-aB8L-s7p-2p0o7G2j5TOp84i6Dtvbx3RMHwKxEeGYKyNDbEMiNrIHsTn7zF51PKUX6xF-J9Ly9zUUb9-tvJZ6Ma87zeMXM_E-Q6mZC2J7m4z7kMaroNHKlzTBARsVLjD148ddaprveqDWs6xphpDZvCq459KKvesdhscpNCGasf-Wp_qAQSjfRVp5yNlnJUeOIdopZI4c2Ucg4"/>
+<div class="absolute inset-0 bg-black/20"></div>
+<img alt="Card Skeletons" class="relative z-10 w-full px-4" data-alt="abstract minimalist white card UI components with rounded corners and soft drop shadows on a translucent background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsgG3YqasShfAh9rhn7veeWpuvRLsjeBnOqioaCjrzpfC8Axp2QElzogK7f-oyV8kksuDvq7fcwPM0LKaQZ7Nw5juTqj96x-bR0Nrd0H4uEkZaI7_oh4QpgIDGcgGgD8FFRKG4IuwjnfO1dt2fmx55DLmyt35-t7QG4_H_vWrEDmy5hdGZZzTjrIHv-JpCklXydaZSb1ni4SjW1L-Pq-eari_hDd7NNkQW_3Maiw9YeIDHF4eR1RVxkMgoDL2r5Urn-uQDesCNEws"/>
+</div>
+<button class="absolute top-2 right-2 text-on-surface-variant hover:bg-surface-container-high p-1 rounded-full transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Modal Content -->
+<div class="p-6 space-y-6">
+<!-- Background Picker -->
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-3 uppercase tracking-wider">Background</label>
+<div class="space-y-4">
+<!-- Image Thumbnails -->
+<div class="grid grid-cols-4 gap-2">
+<div class="h-10 rounded overflow-hidden cursor-pointer ring-2 ring-primary">
+<img alt="Background Option" class="w-full h-full object-cover" data-alt="vibrant abstract waves of blue and turquoise with soft gradients" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWqUD88FKst0JSMGMphwecJ5JUO4OCC3UyZRaFKxp98gdZzOcvHaHWDb2tbxSQfW8HESVT4oJFXArNIF-rVScsKAmZSqAUJkthN0CUHKjVnuPWwLeQhKk9rjFceCgXfml8jOYYFLfsvXizrs77CPG83Ikw06PVQRADJi2-ueFKH7DYyAehIq9e_7R_K9XzWyELQz2WINCFnn9BxbIc2_ZyAWq49lDFXsXjBKXtaDcl0Oc9tOFix9uXGnhydh_idzoaBLZPj8JI8MM"/>
+</div>
+<div class="h-10 rounded overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
+<img alt="Background Option" class="w-full h-full object-cover" data-alt="aerial photography of a dense emerald forest with morning mist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQDQc4geYCDaRh85VUyHsSTTJ-x1ZtIvksh21o7qSUMtCebDUC8k79Vgv_lHIBZaGZgfTCMiotEJYSyB2iKT0SvJ5wfUQApBpiR7JtCRvdiXtlljMCEyj0oowAfudbQbbAAvcsyD8fSMZ3Fsyzx_GF-o2gRKzojMzUgJLCwCkagi6azbeGX8jyiQqPyH7cBIm60xBp2AtBuOIkhbaD07QKogQNWKktwArmLUThz26sc7jsGivxcnWlLVWvzUbe0ETdXxDsvqUA-Tw"/>
+</div>
+<div class="h-10 rounded overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
+<img alt="Background Option" class="w-full h-full object-cover" data-alt="dramatic desert dunes at sunset with warm orange and deep purple shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1Gnpw5wMszrxfbARu6AX_l1X6ArcKRLDYRE8A9w5-B6U2POkCu4S7jKaa2mDxNcerZBQejO2fxVyPr_nbcBaOAacKOnAoiuyjZAyyros2JXfsqqy7urYoYLy4LKdnW_bz8ymUeQSbByMMZM2Cg5sRgxhMyUbrPen7dOPubF1ylMyB313gYy6zKL9uQWtl_Mr37J88ovDOUh7aOA1VW04XcrYpeUWsLtDZ0M-Yd_VjmzoNR8Kne5Z9uIoYXr_RrtKDTLA-2B9u808"/>
+</div>
+<div class="h-10 rounded overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
+<img alt="Background Option" class="w-full h-full object-cover" data-alt="minimalist architecture with sharp clean lines and soft grey concrete textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtlGVXrtkEGceBcgmZYliBINXo4Q6RDWETT1a1pP4uqkk1UbQdoTVWTi2BnUXEiWtapziqc72j_JgzTVGSIf6bU2KL3I0EA8Kj7s0GKMSPBIpNn6KReziaIwyGaqHBC0w89tizkO5UKARE9EK6BbsUWoqBXi2I1ppxmLm2oKwLYX_Cq8ru5yCKDWq9cy0OA1w-df-4a7IvkU-vK5jrFALZqt3Q1MKaBZZPc4dsixCF9qLo7zFz9_XW1jdyimoWr3QaT47DjS2pmt4"/>
+</div>
+</div>
+<!-- Color Swatches -->
+<div class="grid grid-cols-6 gap-2">
+<div class="h-8 rounded bg-primary cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-secondary cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-tertiary-container cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-error cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-[#C377E0] cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-[#61BD4F] cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-[#EB5A46] cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-[#51E898] cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-[#FF78CB] cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-[#344563] cursor-pointer hover:brightness-90"></div>
+<div class="h-8 rounded bg-surface-container-highest flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">more_horiz</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Field -->
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-2 uppercase tracking-wider">Board title<span class="text-error ml-0.5">*</span></label>
+<input class="w-full px-3 py-2 bg-surface-container-high border-none rounded text-sm focus:ring-2 focus:ring-primary placeholder:text-on-surface-variant/50 transition-all" placeholder="Enter board title" type="text"/>
+<p class="mt-2 text-xs text-on-surface-variant">👋 Board title is required</p>
+</div>
+<!-- Visibility Select -->
+<div>
+<label class="block text-xs font-bold text-on-surface-variant mb-2 uppercase tracking-wider">Visibility</label>
+<div class="relative">
+<select class="w-full appearance-none px-3 py-2 bg-surface-container-high border-none rounded text-sm focus:ring-2 focus:ring-primary cursor-pointer">
+<option selected="">Workspace</option>
+<option>Private</option>
+<option>Public</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<footer class="px-6 pb-8 flex flex-col gap-3">
+<button class="w-full bg-primary-container text-white py-2.5 rounded font-bold hover:bg-primary transition-all text-sm">Create</button>
+<button class="w-full text-on-surface-variant py-2 rounded font-medium hover:bg-surface-container-high transition-all text-sm">Cancel</button>
+</footer>
+</section>
+</div>
+</body></html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trello - Search Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#a76500",
+                        "on-tertiary-fixed": "#2c1700",
+                        "error": "#ba1a1a",
+                        "surface-container": "#e8edff",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-variant": "#d7e2ff",
+                        "secondary-fixed-dim": "#7edc6a",
+                        "inverse-surface": "#1d3052",
+                        "background": "#f9f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#041b3c",
+                        "on-secondary-fixed": "#002200",
+                        "secondary-fixed": "#99f983",
+                        "on-surface-variant": "#404751",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#00629d",
+                        "on-background": "#041b3c",
+                        "outline": "#707882",
+                        "surface-container-low": "#f1f3ff",
+                        "surface-dim": "#cadaff",
+                        "on-primary-fixed": "#001d33",
+                        "surface-bright": "#f9f9ff",
+                        "inverse-primary": "#98cbff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#d7e2ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c0c7d2",
+                        "inverse-on-surface": "#edf0ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#97f680",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-fixed-variant": "#025300",
+                        "secondary": "#066e02",
+                        "primary": "#005f98",
+                        "on-primary-fixed-variant": "#004a77",
+                        "on-primary-container": "#fbfbff",
+                        "tertiary-fixed-dim": "#ffb86b",
+                        "tertiary-fixed": "#ffdcbc",
+                        "surface-container-high": "#e0e8ff",
+                        "surface": "#f9f9ff",
+                        "on-secondary-container": "#107308",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#683d00",
+                        "tertiary": "#854f00",
+                        "primary-fixed-dim": "#98cbff",
+                        "primary-container": "#0079bf"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-4 h-12 fixed top-0 z-50 bg-[#0079BF] dark:bg-slate-900 shadow-sm">
+<div class="flex items-center gap-6">
+<div class="text-xl font-black text-white tracking-tighter">Trello</div>
+<nav class="hidden md:flex items-center gap-1">
+<a class="text-white/80 hover:text-white hover:bg-white/20 transition-colors font-['Inter'] text-sm font-medium px-3 py-1.5 rounded" href="#">Workspaces</a>
+<a class="text-white/80 hover:text-white hover:bg-white/20 transition-colors font-['Inter'] text-sm font-medium px-3 py-1.5 rounded" href="#">Recent</a>
+<a class="text-white/80 hover:text-white hover:bg-white/20 transition-colors font-['Inter'] text-sm font-medium px-3 py-1.5 rounded" href="#">Starred</a>
+<button class="bg-white/20 text-white font-bold px-3 py-1.5 rounded font-['Inter'] text-sm hover:bg-white/30 transition-colors">Create</button>
+</nav>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<input class="bg-white/20 border-none rounded text-white text-sm px-3 py-1.5 w-64 placeholder:text-white/70 focus:bg-white focus:text-on-surface focus:ring-0 transition-all" placeholder="Search" type="text"/>
+<span class="material-symbols-outlined absolute right-2 top-1.5 text-white/70 text-sm">search</span>
+</div>
+<button class="text-white hover:bg-white/20 p-1.5 rounded transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-white hover:bg-white/20 p-1.5 rounded transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden ml-2 border border-white/20">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="professional headshot of a smiling man with a neutral gray background, clean lighting and high detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5A7reaiwyP6X-HGbyG5eTkujUsz_j-QThG_Ze3i449VxRsXbznXUg3YNhFv_iSF8_h6zJfOLBawC22cyvnSm7TE6FPnumMaqFjZI7utYJz6OebhkbD8ra9l1yr70noV7IvrOfX0MsrdltAmDOK_oVDQndIkDadNXosB7cEscqb8Zgx1quBZN-gOgbG0s25r7l81-3N0HJOBQOJXpZzB8sRZmFu_dY3OKDz8aJ3WlKsr5hU4v1Co0hk_zSmyQS7JVxepYYycAo5Ak"/>
+</div>
+</div>
+</header>
+<!-- Sidebar Wrapper -->
+<aside class="fixed left-0 top-12 bottom-0 w-[260px] flex flex-col p-3 bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-3 py-4 mb-4">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-white font-bold">W</div>
+<div>
+<div class="text-sm font-semibold text-slate-700 dark:text-slate-300">Workspace Name</div>
+<div class="text-[0.7rem] text-slate-500">Free Plan</div>
+</div>
+</div>
+<div class="space-y-1">
+<a class="px-3 py-2 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all font-['Inter'] text-[0.875rem] leading-relaxed" href="#">
+<span class="material-symbols-outlined">dashboard</span> Boards
+            </a>
+<a class="px-3 py-2 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all font-['Inter'] text-[0.875rem] leading-relaxed" href="#">
+<span class="material-symbols-outlined">dashboard_customize</span> Templates
+            </a>
+<a class="px-3 py-2 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all font-['Inter'] text-[0.875rem] leading-relaxed" href="#">
+<span class="material-symbols-outlined">home</span> Home
+            </a>
+</div>
+<div class="mt-auto border-t border-slate-200 dark:border-slate-800 pt-4">
+<a class="px-3 py-2 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all font-['Inter'] text-[0.875rem]" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+<a class="px-3 py-2 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all font-['Inter'] text-[0.875rem]" href="#">
+<span class="material-symbols-outlined">group</span> Members
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] pt-12 min-h-screen">
+<div class="p-8 max-w-6xl mx-auto">
+<!-- Page Header -->
+<div class="mb-8">
+<h1 class="text-3xl font-extrabold text-on-surface tracking-tight mb-6">Search Results</h1>
+<!-- Filter Bar -->
+<div class="flex flex-wrap items-center gap-3 bg-surface-container-low p-4 rounded-xl">
+<span class="text-on-surface-variant text-xs font-semibold uppercase tracking-wider mr-2">Filters:</span>
+<!-- Label Chip -->
+<div class="flex items-center gap-2 bg-[#61BD4F] text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">label</span>
+                        Active Project
+                        <button class="hover:bg-white/20 rounded-full leading-none p-0.5">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<!-- Member Chip -->
+<div class="flex items-center gap-2 bg-surface-container-highest border border-outline-variant/30 px-3 py-1.5 rounded-full text-xs font-medium text-on-surface">
+<div class="w-5 h-5 rounded-full overflow-hidden">
+<img alt="Member" class="w-full h-full object-cover" data-alt="portrait of a professional woman with a bright friendly expression on a clean studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgwMSVOubjSK0fcmOfg5cppI5ZcqWumupvosXtMuvCDCKfnLfksZc1rl7vQSdfVOzgTnPAXrvKKzNeBfjAL0K5A2M7zEo3xVuQq4vvjrNt3mJHUH-GqrIjGFyz7jHUb4QmhidMXXPeYv_wtnRm9C21bR5Vzqgrfs5G-FLtGDxzRKVIo5mcGFw1K6sh9_e224DR75gojKuyouFm9ljhOIRCgWY7cJXd4eF3MWwWxVEqk4xQyXcY8pNTSPaKXeNU5a9HlanksuePLP8"/>
+</div>
+                        Sarah Jenkins
+                        <button class="hover:bg-on-surface/10 rounded-full leading-none p-0.5">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<!-- Due Chip -->
+<div class="flex items-center gap-2 bg-error-container text-on-error-container px-3 py-1.5 rounded-full text-xs font-bold border border-error/20">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                        Due: overdue
+                        <button class="hover:bg-error/10 rounded-full leading-none p-0.5">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<div class="ml-auto flex items-center gap-4">
+<button class="text-primary text-xs font-semibold hover:underline">Clear all</button>
+<div class="h-4 w-px bg-outline-variant/50"></div>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface text-sm transition-colors">
+<span class="material-symbols-outlined">sort</span>
+                            Sort by Relevance
+                        </button>
+</div>
+</div>
+</div>
+<!-- Results Rows -->
+<div class="space-y-3">
+<!-- Result 1 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">Engineering Board</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">High Priority Tasks</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">Implement API pagination for mobile client</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-[#61BD4F]/10 text-[#61BD4F] text-[0.6rem] font-bold rounded uppercase">Backend</span>
+<span class="px-2 py-0.5 bg-[#C377E0]/10 text-[#C377E0] text-[0.6rem] font-bold rounded uppercase">API</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="headshot of a man with spectacles in a professional office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_YC3n20bjl6fLUn-mInhZ4gT6JyCyIzp3YGy4GtCH4o5OZZldJfF00x7_vHNfZepKxUPK4B6Rr4jAQbDf2YzFzST9dQjslOYmha1SvrEZ6wktKYd_-RdAZBU7n53S9J-E_B-SdK3qWZFak0k-0sZEs119ZPZK-eJMNzgxz2NyUXzxVBo7jQBBxl6o8pLYbMtExOtP2cdAcWYVK5hOU1nL5BC-qOLjSjZd7FUAjBYIhdenchcLpCEcXySSr3QTAEa8-gd6PzUYevU"/>
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="professional female portrait with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw5HwL4y9binPU-ET_YK-y2r8rCpdUWoIa9MEdV8i6iARsDaaCFRQ286iX48MqgHmG_i7e9oRt6upU2QyC6jaSJ63DoWrQgwkm3y2flbNHgl7-U47W2pdPPjugic_4U_r1IphtXGwEGcdA-6gJMV4hshTWn1NnHCaAYfLFzMMt4sU270V0RndjxY6JbU0vphN_Efo8n_FLTLJeeE8NsqNZeMKvhsai0S0Rq3TgldUScLj9gfpntVSZYS58GaSovRYbAPMC6dfVWJo"/>
+</div>
+</div>
+</div>
+<!-- Result 2 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">Marketing Q4</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">Campaign Assets</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">Finalize visual guide for social media ads</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-[#EB5A46]/10 text-[#EB5A46] text-[0.6rem] font-bold rounded uppercase">Urgent</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="confident professional woman in a modern workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATQ5xNlXXlK-iGjEPPWezm4I2OIZ2pGssZZ2IcS7rc7jUQ6Z7EnWqAdFNoqu0IxfhBEyEGAF_bYhnPMGa3FJJ8tnwRao0KgBLnM1dHeoSAfRopKxr4FdWhvxD75vw6xagmFqvA2CAP-pZrwp1vvTEhYHPCCkxnpfrNhYmQWmkxB6lE5ucJmggdcxWb7efJjAfmpdyyEWcpO1rCsgOSoCIj_Qh3O4b60nW8HyZo00xNsxjead5LO3q57CHBXs1pijv9MsZtRdDx7A0"/>
+</div>
+</div>
+</div>
+<!-- Result 3 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">Customer Experience</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">Feedback Loop</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">Review weekly feedback metrics for v2.0 launch</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-[#0079BF]/10 text-[#0079BF] text-[0.6rem] font-bold rounded uppercase">Metrics</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="professional male portrait with warm rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdNmI9VkBgebS9azXWFCETk5ifHOBQCm_WXO2VpxbBA4faWJmwSOvtbTkZt5sd2VfruGALYBZo3CB28peA_YGxqeKCt71rCy9fAp26ZxfloLs3IN4_djT6Sp0aQyano1OVCRwXutpeZcg408LhHP0PTpTQm6XlzSSmYhSqyCTn8iv9_m2pQ5krCVXhUcaL4QJh2w6W1hiGMkRaRf7OtowVihph1AMdaD-b59gKBp61062R1EUa3cgcO1xkhUlEh63_hBncMoMPwQE"/>
+<div class="w-7 h-7 rounded-full border-2 border-surface-container-lowest bg-surface-variant text-[0.6rem] flex items-center justify-center font-bold">+2</div>
+</div>
+</div>
+</div>
+<!-- Result 4 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">Product Roadmap</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">Backlog</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">Dark mode toggle implementation</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-surface-variant text-on-surface-variant text-[0.6rem] font-bold rounded uppercase">UI/UX</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="close-up portrait of a professional man in a bright setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnbQX7dZ4MnnPkNAblDagspxCYfis8kTY7AFXv2AMpz5x9Sd7oswIRjwmh93lE-fDfZlVuBpDjs-C17rNbl2nM0_VEvTGkNHevDlQC3wMspXEVCl662jmaIV9mS304X3S4zjAkb5zMAogpsbh7mIU2vSNWvNghoup9yg6WAGBmzgAQkyHcvQcdvL-x7kLGZA2lscuXnPomyLO-qj_gQCRqWFwenZ_YtYLRpd2DH97qck3EzOQIg2KK0nrrnATVCCs4SXV5JOc6ssA"/>
+</div>
+</div>
+</div>
+<!-- Result 5 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">DevOps</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">Infrastructure</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">Database migration to AWS region us-east-2</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-[#EB5A46]/10 text-[#EB5A46] text-[0.6rem] font-bold rounded uppercase">High Risk</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="professional male profile photo in modern lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR8WHVyeQbcL70t_A0iigkl7psCdR7gEO2BQ_fNT8BBcUxne4zxih7o0qORVzgvqBqKwZv3MY3jkMY6ES4FgUIirRACgyGOO2BJSI2e3m5mkfFDLviXQGJezg3mrPEmeSbBZiy7S7vS63wSZLxq7lanYr0RrxCrH3KYFCQi4-nebS2zN3_07OvA6SWSXGyYLuDhooaDWuaZFmui1pdwqQYhd823z5lzBjs6UVzYNaXFzDsT56vB3HmQZV5j-KtwkI3ODrXwdKl0tY"/>
+</div>
+</div>
+</div>
+<!-- Result 6 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">Sales Pipeline</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">Negotiation</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">Draft enterprise contract for CyberDyne Inc.</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-[#61BD4F]/10 text-[#61BD4F] text-[0.6rem] font-bold rounded uppercase">Legal</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="professional female headshot with a thoughtful expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnsfGmcGjvIlzpTT5m6kDxpQgPYvGJ96qQytVcBiDvS19K_oLmBk08B0LqX19XYG7FLAD-ocm2ws0ivRbVU8NZFxaMvSEcVeWi5hAmiTTvM6t92KMJHJ6dzYbDqumCkG9nZTsSqQZnF36mK_UIjr8vcJCItxTs3XI8B_C0h9V958U7DaNFlgtZAkLJIiNblHt1TqxMwIWrBSnYP0MZvpnT3aVRKwNSu54ubrSluho7WrtyszupYWKgfpZ2QXGTdZ9zUh9SbM9Z-Qk"/>
+</div>
+</div>
+</div>
+<!-- Result 7 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">HR &amp; Culture</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">Onboarding</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">Update remote work policy handbook 2024</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-[#C377E0]/10 text-[#C377E0] text-[0.6rem] font-bold rounded uppercase">Docs</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="portrait of a male professional in a business setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAehcOV-wIvp277h3LeZCGzH2XXY3vFOJuYCY5Etbdr5qi9DWFi4R5o55tHQVGSvP6yPpTYt0HqW9sl0XmMfXAHaZQ2yu2pgsXYEvlizEoaS8BggiP-uz_a_l_kL6nrXgE3TyQ7nIEWp0OdixYLaiOj_nrhGvWj8639rKQVRqVfeTcBOgHVr8agFXahER-1wsL-wbvnwsWm75JlfRrexjvjRQtLj6u-y3Xg6A5U3ximPLKEF-W9fGkzIJ0mTopVC-qZS5DX_Fy91Lo"/>
+</div>
+</div>
+</div>
+<!-- Result 8 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-all p-5 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="flex-1">
+<div class="flex items-center gap-2 text-[0.6875rem] text-on-surface-variant font-medium mb-1">
+<span class="hover:text-primary">Content Strategy</span>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+<span class="hover:text-primary">Blog Pipeline</span>
+</div>
+<h3 class="text-on-surface font-bold text-lg leading-tight">The Future of AI in SaaS - Blog Post Draft</h3>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 bg-[#0079BF]/10 text-[#0079BF] text-[0.6rem] font-bold rounded uppercase">Editorial</span>
+</div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-surface-container-lowest" data-alt="clear professional headshot of a woman on a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf7d40UuZrtHL0TGcrRzTzjgzX3BoZqUKQLc7FEylKwLcFvN4Iew11DLm3VMlmj14ziniyZ1L7sfjjWAHwSXZJmF4zfGeETG38Txy-of6BDdfhrQYmddf0Ca68b5Q0V4cOm8xAcTtQO_bnHNxVyTIaUnC2q_SBJd2R_CUFSvbEsW0iRzCInlBemO5Z8qf1shztFUKe9ceec96TWcYnDKtG5uBqdZ_nIjbAPo0aDmMEU17_CZ_bD58Ilx8aL0zlOL-wu0cZ4DX6jhw"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State / Footer hint -->
+<div class="mt-12 text-center py-10 opacity-60">
+<p class="text-on-surface-variant text-sm font-medium">Looking for more? Try searching by card ID or attachment name.</p>
+<div class="mt-4 flex justify-center gap-2">
+<button class="bg-surface-container-highest px-4 py-2 rounded-lg text-xs font-bold text-on-surface hover:bg-surface-container-high transition-colors">Load more results</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

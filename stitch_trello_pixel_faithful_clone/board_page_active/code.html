@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Launch Q3 | Trello</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#a76500",
+                        "on-tertiary-fixed": "#2c1700",
+                        "error": "#ba1a1a",
+                        "surface-container": "#e8edff",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-variant": "#d7e2ff",
+                        "secondary-fixed-dim": "#7edc6a",
+                        "inverse-surface": "#1d3052",
+                        "background": "#f9f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#041b3c",
+                        "on-secondary-fixed": "#002200",
+                        "secondary-fixed": "#99f983",
+                        "on-surface-variant": "#404751",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#00629d",
+                        "on-background": "#041b3c",
+                        "outline": "#707882",
+                        "surface-container-low": "#f1f3ff",
+                        "surface-dim": "#cadaff",
+                        "on-primary-fixed": "#001d33",
+                        "surface-bright": "#f9f9ff",
+                        "inverse-primary": "#98cbff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#d7e2ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c0c7d2",
+                        "inverse-on-surface": "#edf0ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#97f680",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-fixed-variant": "#025300",
+                        "secondary": "#066e02",
+                        "primary": "#005f98",
+                        "on-primary-fixed-variant": "#004a77",
+                        "on-primary-container": "#fbfbff",
+                        "tertiary-fixed-dim": "#ffb86b",
+                        "tertiary-fixed": "#ffdcbc",
+                        "surface-container-high": "#e0e8ff",
+                        "surface": "#f9f9ff",
+                        "on-secondary-container": "#107308",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#683d00",
+                        "tertiary": "#854f00",
+                        "primary-fixed-dim": "#98cbff",
+                        "primary-container": "#0079bf"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-card {
+            box-shadow: 0 1px 0 rgba(9,30,66,0.25);
+        }
+        .board-bg {
+            background-color: #0079BF;
+        }
+        .glass-header {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
+        /* Custom scrollbar for horizontal canvas */
+        .kanban-canvas::-webkit-scrollbar {
+            height: 12px;
+        }
+        .kanban-canvas::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        .kanban-canvas::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body class="h-full font-body board-bg text-on-surface overflow-hidden">
+<!-- TopNavBar (Shared Component JSON) -->
+<header class="flex justify-between items-center w-full px-4 h-12 fixed top-0 z-50 bg-[#0079BF] dark:bg-slate-900 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black text-white tracking-tighter">Trello</span>
+<nav class="hidden md:flex gap-4 items-center">
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm font-medium transition-colors" href="#">Workspaces</a>
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm font-medium transition-colors" href="#">Recent</a>
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm font-medium transition-colors" href="#">Starred</a>
+<button class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-sm text-sm font-medium transition-colors">Create</button>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative hidden lg:block">
+<input class="bg-white/20 border-none rounded-md px-3 py-1 text-sm text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 w-64" placeholder="Search" type="text"/>
+</div>
+<button class="text-white/80 hover:text-white material-symbols-outlined">notifications</button>
+<button class="text-white/80 hover:text-white material-symbols-outlined">help</button>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border-2 border-white/20" data-alt="Close-up portrait of a professional woman with a friendly expression in a modern office setting with soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLCnUHx0teu5a0yWR6F3XiWkNHbPbmHf0UVdtL1YEWOkn4ugC8-0MVjwFurGmznq4o0yXM_s-oo7yfCCfe42TSZZGqhrlKu6zYvYee6OEmqevfbLDSYa0GBL6SHphz-uNci6l62Vy1X62Yc0-aR1RGjUGbYpLC_h9ZNR6I8gLYdet4nTS906AT2bHsJGYyc41khoUAQwxdwxB9Ur_ZuTu7qCZoM1nSPATzn6H5upEIMfPfy6RlEul4m-i37pr81j1EvZT1RL6GCcw"/>
+</div>
+</header>
+<!-- SideNavBar (Shared Component JSON) -->
+<aside class="fixed left-0 top-12 bottom-0 w-[260px] flex flex-col p-3 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 z-40 hidden md:flex">
+<div class="flex items-center gap-3 px-3 py-2 mb-4">
+<div class="w-8 h-8 bg-primary-container rounded flex items-center justify-center text-white font-bold">W</div>
+<div class="flex flex-col">
+<span class="font-['Inter'] text-[0.875rem] font-semibold text-slate-900">Workspace Name</span>
+<span class="text-[0.75rem] text-slate-500">Free Plan</span>
+</div>
+</div>
+<nav class="flex-grow">
+<a class="px-3 py-2 my-1 flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 text-[#005f98] dark:text-blue-200 font-semibold rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Inter'] text-[0.875rem]">Boards</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard_customize">dashboard_customize</span>
+<span class="font-['Inter'] text-[0.875rem]">Templates</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Inter'] text-[0.875rem]">Home</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-slate-100 pt-4">
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 hover:bg-slate-100 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[0.875rem]">Settings</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 hover:bg-slate-100 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-[0.875rem]">Members</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-[260px] pt-12 h-full flex flex-col">
+<!-- Board Header -->
+<div class="h-12 glass-header flex items-center justify-between px-4 flex-shrink-0">
+<div class="flex items-center gap-2">
+<h1 class="text-white font-bold text-lg px-2 py-1 rounded hover:bg-white/20 cursor-text">Product Launch Q3</h1>
+<button class="text-white/80 hover:text-white p-1 rounded hover:bg-white/20 material-symbols-outlined text-sm">star</button>
+<div class="h-4 w-px bg-white/20 mx-1"></div>
+<button class="flex items-center gap-1 text-white text-xs font-medium px-2 py-1 rounded bg-white/10 hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-sm">group</span>
+<span>Workspace visible</span>
+</button>
+<div class="h-4 w-px bg-white/20 mx-1"></div>
+<!-- Avatar Stack -->
+<div class="flex -space-x-2 ml-1">
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-[#0079BF]" data-alt="Close-up of a smiling young woman with dark hair in a bright outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF7Qv48XHLWL_qCyfxFKOZM4wjMclQZDFmP75X7BkHjmJmh8Jxa-mGwnIMBUj3QRAcpcAYnfVWgIiNzQq0BSoTfPsSQ00JXGWvuKBQaj6VvuTHfIndlh20cqAbWekDhtMrkh9SnrbSrJjIYPnurjLHj_mfTRyYmwVvRKtVF_63mNhYVV2-sBgTN5dgG8gVNGkS5YiMYy8xtb_PsfVB1z28gVl0kYLosKAwbbpo7RTszv34cCKmF7czRHx-eJC9VCk8rB--HhlMJ8A"/>
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-[#0079BF]" data-alt="Portrait of a young man with a beard smiling against a neutral studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGDhqJcVe-lrCTtFN-H2afl6GTaGARjHEJU4zUm6onGG1i0EIXwcwbM6-Sk1KGrESaoIRsDTzYuvPmaC3zOqiUsK9rO__wszgimn8IVdljyTQoXahR7gF6cX-WeQKkPQ_S4_C_YTymlRSO5Pige5fxU1CTcdHuSrAg-kdQRCbzcqO7CY32Do8YQKRQ5Ubj73SLEfKz2y0g-hp8JxGPjQvqwgEJcwrUmfAoes3v5XKWAGDy20zkJArerQ0WokiDPVk8Fq7PnrCcLow"/>
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-[#0079BF]" data-alt="Portrait of a cheerful person with short hair wearing glasses in a soft-lit indoor environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpxyQ3tLOvK5GmoDy8PcvI7-XLDyU9keTX8MEmeCcc4BSnw73_nIoQJf6Bs8h4MTdn-YTDm-KUrs7JlxQXm7pt_TcW77ICHah7pyvh102UgYYyVF3fO1zu3h75F8Q_T-EiwEBXUbu_rpOjQt7NFDn7yGDEZZ_awDNlDbu6TnvCWtJ7QBVXtwtHrUFKuszJDVMaBtGQB2l3eZ0V5mp4qi_tybq7kPI50qu83HXZ3jq_hYxSuRKenJ1qx6oZVgilVzWyt4-9opgQ0Eg"/>
+<img alt="Member" class="w-7 h-7 rounded-full border-2 border-[#0079BF]" data-alt="Close-up of a middle-aged man with graying hair and a confident expression in a workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmHqXlS3-sn4PW1LKD6Y5MCWovE6fS4z1sciDvDqPp0OOmXw4moRgeCmvT-EgO2WNDBWIVHoiP2takytJ0xnjYWIaLQJTUbTOtFrHQaeC8d0UYMl20Ox6YbSeDhmFDwislgzv0lIn2Ok7rLgie7049J8Q00YGzLRTu4wUxoS7UCsqKOSAf0f54bOX3R-ySqC_ZmdxFZl_1r6hIfEUqFd9Ju2zqwRDdWr6-nZ14Ew3jNOlTHi9B-uOrIHGzxrmjbFmzvXkQZssttmk"/>
+<div class="w-7 h-7 rounded-full border-2 border-[#0079BF] bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface">+2</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1 text-white text-sm font-medium px-3 py-1.5 rounded hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span>Filters</span>
+</button>
+<button class="bg-surface-container-lowest text-primary font-semibold text-sm px-3 py-1.5 rounded-sm hover:bg-white/90 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>Share</span>
+</button>
+<button class="text-white/80 hover:text-white p-1 rounded hover:bg-white/20 material-symbols-outlined">more_horiz</button>
+</div>
+</div>
+<!-- Kanban Canvas -->
+<div class="flex-grow kanban-canvas overflow-x-auto p-4 flex items-start gap-3">
+<!-- List: Backlog -->
+<section class="w-[272px] flex-shrink-0 bg-[#EBECF0] rounded-lg flex flex-col max-h-full">
+<div class="px-3 pt-3 pb-2 flex items-center justify-between">
+<h2 class="text-sm font-bold text-slate-700 px-1">Backlog</h2>
+<button class="material-symbols-outlined text-slate-500 hover:bg-slate-200 p-1 rounded">more_horiz</button>
+</div>
+<div class="px-2 pb-2 space-y-2 overflow-y-auto">
+<!-- Card with Cover -->
+<div class="bg-surface-container-lowest rounded-md shadow-card hover:bg-slate-50 transition-colors cursor-pointer group overflow-hidden">
+<div class="h-32 bg-cover bg-center" data-alt="Abstract colorful visualization of data flow and connections with vibrant blue and orange hues" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBGOKbr9u41dvXMlsa-YTwXOIKF4zjQqercqw0qkwnPLKCnLxrLd9F31JtwVUt0gv3RnhxUDf9BGoEA7PiQSSL2hKqCE44SHQ4BLrrlVm-trj4q-AD_PkdXcREw_DGK9xymN2Hb7gNYMrArPqTYjkaT0860xTxl-5lATI2aeXMFdh1h1bz_BFqUPfTupPGWnV3y4rJNx08tFoNadm60n4iYXthJQGhXqC_NLAzzTATmz-c0lPWpDqhc2BAfKueG-R5uqAYLA9lbXbE')"></div>
+<div class="p-3">
+<div class="flex flex-wrap gap-1 mb-2">
+<span class="h-2 w-10 rounded-full bg-[#61BD4F]"></span>
+<span class="h-2 w-10 rounded-full bg-[#C377E0]"></span>
+</div>
+<h3 class="text-sm text-on-surface">Market analysis Q3 report</h3>
+</div>
+</div>
+<!-- Regular Card -->
+<div class="bg-surface-container-lowest p-3 rounded-md shadow-card hover:bg-slate-50 transition-colors cursor-pointer">
+<div class="flex flex-wrap gap-1 mb-2">
+<span class="h-2 w-10 rounded-full bg-[#EB5A46]"></span>
+</div>
+<h3 class="text-sm text-on-surface">Legal review of partnership terms</h3>
+</div>
+</div>
+<button class="flex items-center gap-2 p-2 m-2 text-slate-500 hover:bg-slate-200 rounded-md transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add a card</span>
+</button>
+</section>
+<!-- List: To Do -->
+<section class="w-[272px] flex-shrink-0 bg-[#EBECF0] rounded-lg flex flex-col max-h-full">
+<div class="px-3 pt-3 pb-2 flex items-center justify-between">
+<h2 class="text-sm font-bold text-slate-700 px-1">To Do</h2>
+<button class="material-symbols-outlined text-slate-500 hover:bg-slate-200 p-1 rounded">more_horiz</button>
+</div>
+<div class="px-2 pb-2 space-y-2 overflow-y-auto">
+<div class="bg-surface-container-lowest p-3 rounded-md shadow-card hover:bg-slate-50 transition-colors cursor-pointer">
+<h3 class="text-sm text-on-surface mb-3">Frontend refactor</h3>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 bg-[#F2D600] text-on-surface px-1.5 py-0.5 rounded-sm text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span>Aug 12</span>
+</div>
+<div class="flex items-center gap-1 text-slate-500 text-[11px]">
+<span class="material-symbols-outlined text-[14px]">check_box</span>
+<span>2/5</span>
+</div>
+</div>
+<img alt="Member" class="w-6 h-6 rounded-full" data-alt="Small circle portrait of a smiling person with short dark hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBppSpDNTPpG_2HFEjDy-WEkzP5atimwUPyMZ9ej0RydJbje4ATSBizT1NRv-HEh-3vT47T1dHSns6HbaeHM8RJhjQcalG_43jeGrr_Y2h8e2tTObysX94CXNRcSaGrV2WI7coP16KTtspMbrY70oHfnjguDnefTi9ZXWi2nxEpdqdx-pEvK2XQMwhA06ZVZiJ8vyYE2grGvA2AXeJs8dXovabZEROuV8ZBBmpAsKhtdArHX7x6MATKXRbejJ4XFfWnA5EgsVyfCx0"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-md shadow-card hover:bg-slate-50 transition-colors cursor-pointer">
+<h3 class="text-sm text-on-surface">Integrate Stripe API</h3>
+</div>
+</div>
+<button class="flex items-center gap-2 p-2 m-2 text-slate-500 hover:bg-slate-200 rounded-md transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add a card</span>
+</button>
+</section>
+<!-- List: In Progress -->
+<section class="w-[272px] flex-shrink-0 bg-[#EBECF0] rounded-lg flex flex-col max-h-full">
+<div class="px-3 pt-3 pb-2 flex items-center justify-between">
+<h2 class="text-sm font-bold text-slate-700 px-1">In Progress</h2>
+<button class="material-symbols-outlined text-slate-500 hover:bg-slate-200 p-1 rounded">more_horiz</button>
+</div>
+<div class="px-2 pb-2 space-y-2 overflow-y-auto">
+<div class="bg-surface-container-lowest p-3 rounded-md shadow-card hover:bg-slate-50 transition-colors cursor-pointer">
+<div class="flex flex-wrap gap-1 mb-2">
+<span class="h-2 w-10 rounded-full bg-primary"></span>
+</div>
+<h3 class="text-sm text-on-surface mb-2">Social media assets creation</h3>
+<div class="flex justify-end">
+<img alt="Member" class="w-6 h-6 rounded-full" data-alt="Small avatar of a woman with smiling eyes and brown hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY2aDmPv-W5L0SQkO5SIzc_uwkCwi6b6JlHyhAa3mQARuHulPyoJtdpPPL8UpghbGzvlNhSPYqGu5vFPyd7eJwMJwqfvHNRw7JYir-z-u68gzM-BtBSCPVi8N54vL7fP4NYzbtiB2XF--hGRdEDiPqzxRbmhM_9CA03cU75hHxMG8JzSe12Ek9tGa98zKHHtNyg5X3c0Qpopte4dnvvZYoJ6fln2OanLapcwrTqF6zI-TN86lE7pYFE9bilKQIopT06dJm85GwVf0"/>
+</div>
+</div>
+</div>
+<button class="flex items-center gap-2 p-2 m-2 text-slate-500 hover:bg-slate-200 rounded-md transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add a card</span>
+</button>
+</section>
+<!-- List: Done -->
+<section class="w-[272px] flex-shrink-0 bg-[#EBECF0] rounded-lg flex flex-col max-h-full">
+<div class="px-3 pt-3 pb-2 flex items-center justify-between">
+<h2 class="text-sm font-bold text-slate-700 px-1">Done</h2>
+<button class="material-symbols-outlined text-slate-500 hover:bg-slate-200 p-1 rounded">more_horiz</button>
+</div>
+<div class="px-2 pb-2 space-y-2 overflow-y-auto">
+<div class="bg-surface-container-lowest p-3 rounded-md shadow-card hover:bg-slate-50 transition-colors cursor-pointer">
+<h3 class="text-sm text-on-surface mb-3 line-through opacity-70">Infrastructure setup</h3>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 bg-[#61BD4F] text-white px-1.5 py-0.5 rounded-sm text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]">done</span>
+<span>Jul 28</span>
+</div>
+</div>
+</div>
+</div>
+<button class="flex items-center gap-2 p-2 m-2 text-slate-500 hover:bg-slate-200 rounded-md transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add a card</span>
+</button>
+</section>
+<!-- Add Another List Placeholder -->
+<section class="w-[272px] flex-shrink-0 bg-white/20 rounded-lg h-auto">
+<button class="w-full flex items-center gap-2 p-3 text-white hover:bg-white/10 rounded-lg transition-colors text-sm font-bold">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add another list</span>
+</button>
+</section>
+</div>
+</main>
+</body></html>

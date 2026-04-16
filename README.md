@@ -1,6 +1,6 @@
 # Trello Clone
 
-A full-stack Kanban board app built for the **Scaler SDE Intern Fullstack Assignment**. Matches the Stitch/Figma design 1:1 and ships the MVP plus selected bonuses (responsive layout, multi-board workspace, comments, activity feed, card covers, board backgrounds, archived-items drawer, global search, due-date states).
+A full-stack Kanban board app built for the **Scaler SDE Intern Fullstack Assignment**. Matches the Stitch/Figma design 1:1 and ships the MVP plus selected bonuses (responsive layout, multi-board workspace, comments, activity feed, card covers, board backgrounds including photos + gradients, archived-items drawer, global search, due-date states, a templates gallery with "use this template" instantiation, board filtering/sort, and delete-board flow).
 
 ## Tech stack
 
@@ -18,30 +18,31 @@ A full-stack Kanban board app built for the **Scaler SDE Intern Fullstack Assign
 trello-clone/
 ├── apps/
 │   ├── api/          # Express + Prisma backend
-│   │   ├── prisma/   # schema.prisma, migrations, seed.ts
+│   │   ├── prisma/   # schema.prisma, migrations, seed.ts (users, boards, labels, 6 templates)
 │   │   └── src/
 │   │       ├── index.ts            # express app entry
 │   │       ├── middleware/         # auth (default user), error
-│   │       ├── routes/             # boards, lists, cards, labels, checklists, comments, activities, search, users
-│   │       ├── services/           # mappers, includes, activity, position
+│   │       ├── routes/             # boards, lists, cards, labels, checklists, comments, activities, search, users, templates
+│   │       ├── services/           # mappers, templateMappers, includes, activity, position
 │   │       └── lib/                # prisma client, errors
 │   └── web/          # Vite + React frontend
 │       └── src/
 │           ├── App.tsx, main.tsx
-│           ├── routes/             # BoardsHome, BoardPage, SearchResultsPage, NotFoundPage
+│           ├── routes/             # BoardsHome, BoardPage, TemplatesPage, SearchResultsPage, NotFoundPage
 │           ├── components/
-│           │   ├── board/          # BoardHeader, BoardCanvas, ListColumn, CardTile, QuickAddCard, AddListColumn, FilterPopover, ArchivedItemsDrawer
-│           │   ├── boards/         # BoardTile, CreateBoardDialog
+│           │   ├── board/          # BoardHeader (w/ Delete), BoardCanvas, ListColumn, CardTile, QuickAddCard, AddListColumn, FilterPopover, ArchivedItemsDrawer
+│           │   ├── boards/         # BoardTile (w/ hover Delete), CreateBoardDialog (Colors/Photos tabs), BoardsFilterBar
 │           │   ├── card/           # CardDetailModal, LabelPicker, MemberPicker, DueDatePicker, CoverPicker, Checklist, CommentList
+│           │   ├── templates/      # TemplateCard, CategoryTabs, SortMenu, CreateFromTemplateDialog
 │           │   ├── common/         # Avatar, Icon, LabelChip
-│           │   └── layout/         # AppShell, TopNav, SideNav
-│           ├── hooks/              # useBoard, useBoards, useCard, useArchived, useLabels, useActivities, useSearch, useUsers
+│           │   └── layout/         # AppShell, TopNav (w/ Starred+Recent links), SideNav
+│           ├── hooks/              # useBoard, useBoards, useCard, useArchived, useLabels, useActivities, useSearch, useUsers, useTemplates
 │           ├── stores/ui.ts        # Zustand UI store
 │           ├── lib/api.ts          # axios instance
 │           └── utils/              # due.ts, positions.ts, cn.ts
 ├── packages/
 │   └── shared/       # Zod schemas & inferred TS types shared across web+api
-│       └── src/schemas/  # board, list, card, label, member, checklist, comment, activity, search, common
+│       └── src/schemas/  # board, list, card, label, member, checklist, comment, activity, search, template, common
 ├── docker-compose.yml
 ├── render.yaml
 ├── vercel.json
@@ -85,7 +86,7 @@ cp apps/api/.env.example apps/api/.env
 pnpm --filter api exec prisma migrate dev --name init
 pnpm db:seed
 ```
-Creates the schema, a default user, and a sample **Product Launch** board with 4 lists, 10 labels, cards with checklists + comments.
+Creates the schema, a default user, **5 demo boards** (3 with photo backgrounds, 2 with solid colors — Product Launch, Engineering Sprint 24, Q2 Marketing Campaign, Design System, Company OKRs — Q2), 10 labels per board, cards with checklists + comments, **and 6 seed templates** (Agile Project Management, Design Sprint, Sales Pipeline, Marketing Campaign, Daily Task Tracker, Business Plan) — 4 with photo covers, 2 with gradient covers that flow through to the instantiated board background.
 
 ### 4. Run the app
 ```bash
@@ -145,12 +146,12 @@ pnpm db:studio        # prisma studio
 Base: `/api`. All routes resolve the seeded default user via `defaultUser` middleware.
 
 ### Boards
-- `GET    /api/boards` — list boards (owned or member-of)
-- `POST   /api/boards` — create board (seeds 3 lists + 10 labels)
+- `GET    /api/boards` — list boards (owned or member-of), starred-first, `updatedAt`-desc
+- `POST   /api/boards` — create board (seeds 3 lists + 10 labels). Accepts `background: { type: 'color' | 'image' | 'gradient', value: string }`
 - `GET    /api/boards/:id` — board + members + active lists
 - `PATCH  /api/boards/:id` — rename, star, archive, change background
 - `GET    /api/boards/:id/archived` — archived lists + cards on this board
-- `DELETE /api/boards/:id` — hard delete
+- `DELETE /api/boards/:id` — hard delete (cascades via Prisma `onDelete: Cascade` through lists, cards, labels, members, checklists, comments, activities)
 
 ### Lists (mounted under `/api/boards/:boardId/lists`)
 - `GET  /` — lists + their cards (active only)
@@ -187,6 +188,11 @@ Base: `/api`. All routes resolve the seeded default user via `defaultUser` middl
 - `GET /api/search?q=...`
 - `GET /api/users`, `GET /api/users/me`
 
+### Templates
+- `GET  /api/templates` — list templates. Optional `?category=<TemplateCategory>` filter. Ordered `isMostPopular` → `isFeatured` → `useCount` → `title`.
+- `GET  /api/templates/:id` — template detail (lists + card stubs)
+- `POST /api/templates/:id/instantiate` — clone into a new board. Accepts `{ title? }`. Wrapped in a Prisma `$transaction({ maxWait: 30000, timeout: 30000 })`; copies lists, cards, and carries over `boardBackgroundType` / `boardBackgroundValue` as the new board's background.
+
 ---
 
 ## Architecture highlights
@@ -195,7 +201,11 @@ Base: `/api`. All routes resolve the seeded default user via `defaultUser` middl
 - **Default-user auth** — a single seeded user owns every board (per assignment). Middleware hydrates `req.userId` on every request. Swap in real auth by replacing `apps/api/src/middleware/auth.ts`.
 - **Optimistic drag & drop** — `useMoveCard` patches the TanStack Query cache synchronously, rolls back on error.
 - **Shared Zod schemas** — `@trello-clone/shared` exports runtime validators (API: `schema.parse(req.body)`) and inferred TS types (web). One source of truth for the contract.
-- **URL ↔ state sync** — `BoardPage` uses `?card=:id` for deep-linkable cards with two one-way effects (URL→state, state→URL) to avoid loops.
+- **Three-type board backgrounds** — `background = { type: 'color' | 'image' | 'gradient', value: string }`. Color values are hex strings, image values are URLs, gradient values are raw CSS `linear-gradient(...)` strings applied via `style.backgroundImage` (bypasses Tailwind JIT, which can't detect dynamically-assembled class names).
+- **URL ↔ state sync** — `BoardPage` uses `?card=:id` for deep-linkable cards with two one-way effects (URL→state, state→URL) to avoid loops. `BoardsHome` reads `?view=starred` / `?view=recent` from the top-nav links and pre-sets the filter.
+- **Boards filter bar** — `BoardsFilterBar` provides search + Show (all/starred/recent) + Background (all/color/image/gradient) + Sort (recent/oldest/A→Z/Z→A) dropdowns with an active-chip row and "Clear all" button. When all filters are at defaults, `BoardsHome` preserves the original two-section layout (Starred / Your boards); otherwise it collapses to a single dynamic-titled section.
+- **Templates gallery** — `/templates` route with category tabs, search, and sort (default A→Z). "Use template" opens a dialog to name the new board, then hits `POST /api/templates/:id/instantiate`. The template cover is carried over as the new board's background so the look&feel is preserved.
+- **Delete board flow** — two entry points: the three-dot menu in `BoardHeader` (navigates to `/boards` after delete) and a hover-only "More" dropdown on each `BoardTile` (stays on dashboard, relies on query invalidation). Both funnel through `useDeleteBoard` with a confirm-title dialog.
 - **Activity feed** — every mutating action calls `logActivity(tx, ...)` inside the same transaction for an eventually consistent per-board event log.
 
 ---

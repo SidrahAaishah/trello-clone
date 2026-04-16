@@ -49,17 +49,22 @@ The shared package is **ESM**, compiled with `tsc` to `dist/`. Both apps import 
 
 Full schema: `apps/api/prisma/schema.prisma`.
 
-**Entities**: `User`, `Board`, `BoardMember`, `List`, `Card`, `Label`, `CardLabel`, `CardMember`, `Checklist`, `ChecklistItem`, `Comment`, `Activity`.
+**Entities**: `User`, `Board`, `BoardMember`, `List`, `Card`, `Label`, `CardLabel`, `CardMember`, `Checklist`, `ChecklistItem`, `Comment`, `Activity`, `Template`, `TemplateList`, `TemplateCard`.
 
 Key points:
 - All ids are **cuid** strings (collision-safe, URL-friendly).
 - **Positions** (`List.position`, `Card.position`, `Checklist.position`, `ChecklistItem.position`) are `Float`. We compute midpoints client-side; the server rebalances only when two neighbours are closer than `MIN_POSITION_GAP` (0.0001).
 - **Soft delete = archive**: `archivedAt` timestamp on `Board`, `List`, `Card`. Setting `archivedAt: null` restores.
-- **Hard delete = cascade**: `DELETE /api/boards/:id` cascades through `onDelete: Cascade` FKs.
+- **Hard delete = cascade**: `DELETE /api/boards/:id` cascades through `onDelete: Cascade` FKs — lists, cards, labels, members, checklists, comments, activities all go in one statement. This is exposed in the UI via the three-dot menu in `BoardHeader` and the hover "More" menu on each `BoardTile`.
 - **Label colors** are a fixed enum of 10 values (`LABEL_COLORS` in shared) → hex map in `LABEL_COLOR_HEX`. Every new board seeds all 10 labels unnamed.
 - **Activity payload** is `Json @default("{}")` — arbitrary per-type data, typed via `ActivityType` union.
+- **Board background** is stored as two plain columns (`backgroundType: String`, `backgroundValue: String`). The `BackgroundSchema` Zod enum in `packages/shared/src/schemas/common.ts` constrains `type` to `'color' | 'image' | 'gradient'`. DB stores strings so widening the enum is a schema-free change.
+- **Template covers** mirror the same shape (`boardBackgroundType`, `boardBackgroundValue`). On instantiate, these flow through verbatim to the new board's background, preserving the look&feel.
 
-**Seed**: `apps/api/prisma/seed.ts` creates one default user (`isDefault: true`) and one **Product Launch** board with 4 lists, 10 labels, ~5 cards with checklists and comments.
+**Seed**: `apps/api/prisma/seed.ts` creates:
+- one default user (`isDefault: true`);
+- **5 demo boards**, 3 with photo backgrounds (Product Launch, Engineering Sprint 24, Q2 Marketing Campaign) and 2 with solid-color backgrounds (Design System, Company OKRs — Q2), each with 3–4 lists, all 10 labels, and a sprinkling of cards + checklists + comments;
+- **6 templates**, 4 with photo covers (Agile Project Management, Design Sprint, Sales Pipeline, Marketing Campaign) and 2 with CSS gradient covers (Daily Task Tracker = amber→orange→pink, Business Plan = slate trio).
 
 ---
 
@@ -91,9 +96,11 @@ Finds `User` where `isDefault = true` and attaches its id to `req.userId`. All w
 | `activities.ts` | `/api/boards/:boardId/activities` | list (paginated) |
 | `search.ts` | `/api/search` | cross-board card search, returns `{ cards, boards, labels }` |
 | `users.ts` | `/api/users` | list + `me` |
+| `templates.ts` | `/api/templates` | list (w/ `?category=` filter), get by id, instantiate (clones template → new Board inside a Prisma `$transaction({ maxWait: 30_000, timeout: 30_000 })`) |
 
 ### Services
-- `services/mappers.ts` — Prisma entity → API DTO mappers (`mapBoard`, `mapList`, `mapCard`, `mapCardSummary`, `mapLabel`, `mapMember`, `mapActivity`, etc.). These trim internals and pack `cover` / `background` into nested objects.
+- `services/mappers.ts` — Prisma entity → API DTO mappers (`mapBoard`, `mapList`, `mapCard`, `mapCardSummary`, `mapLabel`, `mapMember`, `mapActivity`, etc.). These trim internals and pack `cover` / `background` into nested objects. `backgroundType` is cast to the three-value union `'color' | 'image' | 'gradient'`.
+- `services/templateMappers.ts` — Prisma `Template`/`TemplateList`/`TemplateCard` → DTO. Same treatment as board mappers, with `boardBackgroundType` widened to include `'gradient'`.
 - `services/includes.ts` — reusable Prisma `include` expressions. `cardSummaryInclude` = labels + members + cover + checklist counts.
 - `services/activity.ts` — `logActivity(tx, { boardId, actorId, type, payload })` called inside every mutation transaction.
 - `services/position.ts` — server-side position helpers + rebalance logic.
@@ -114,16 +121,18 @@ Finds `User` where `isDefault = true` and attaches its id to `req.userId`. All w
 - **Zustand** — tiny client-only UI state (`openCardId`, `archivedDrawerOpen`, `filter`). Lives in `src/stores/ui.ts`.
 - **Radix UI** — headless primitives (Dialog, Popover, DropdownMenu, Tooltip). We skin them with Tailwind.
 - **@dnd-kit** — accessible drag-and-drop. Used in `BoardCanvas` for both list reordering and card moves.
-- **react-router-dom v6** — `/` (BoardsHome), `/boards/:boardId` (BoardPage with `?card=:id` deep-link), `/search`, `/404`.
+- **react-router-dom v6** — `/` (redirects to `/boards`), `/boards` (BoardsHome, reads `?view=starred|recent` from query), `/boards/:boardId` (BoardPage with `?card=:id` deep-link), `/templates` (TemplatesPage), `/search`, `*` → NotFoundPage.
 - **axios** — `src/lib/api.ts` creates the instance with `baseURL = VITE_API_URL + '/api'` (or `/api` for the dev proxy).
 
 ### Routing & layout
 ```
 App.tsx
  └── <AppShell>           (TopNav + SideNav + <main>)
-      ├── BoardsHome      (/)
+      ├── BoardsHome      (/boards)
+      │     ├── BoardsFilterBar        (search + Show/Background/Sort dropdowns)
+      │     └── BoardTile × N          (hover = "More" dropdown → Delete)
       ├── BoardPage       (/boards/:boardId)
-      │     ├── BoardHeader
+      │     ├── BoardHeader            (three-dot menu → Delete board)
       │     ├── BoardCanvas
       │     │    ├── ListColumn × N
       │     │    │    ├── CardTile × N
@@ -131,6 +140,11 @@ App.tsx
       │     │    └── AddListColumn
       │     ├── CardDetailModal       (opens when ?card=:id in URL)
       │     └── ArchivedItemsDrawer   (opens from archivedDrawerOpen)
+      ├── TemplatesPage   (/templates)
+      │     ├── CategoryTabs
+      │     ├── search input + SortMenu  (default: A → Z)
+      │     ├── TemplateCard × N (hero/side/grid variants)
+      │     └── CreateFromTemplateDialog (modal)
       ├── SearchResultsPage  (/search?q=...)
       └── NotFoundPage
 ```
@@ -140,7 +154,7 @@ Every API interaction is wrapped. Query keys are exported as factories (e.g. `bo
 
 | Hook | What it does |
 |---|---|
-| `useBoards` | GET/POST `/boards`, star/archive/rename |
+| `useBoards` | GET/POST `/boards`, star/archive/rename, **`useDeleteBoard`** for hard delete |
 | `useBoard` | GET `/boards/:id` (board + members + lists) |
 | `useBoardLists` | GET `/boards/:id/lists` (lists + cards) |
 | `useBoardLabels` | GET `/boards/:id/labels` |
@@ -151,6 +165,7 @@ Every API interaction is wrapped. Query keys are exported as factories (e.g. `bo
 | `useActivities` | per-board feed |
 | `useSearch` | cross-board search |
 | `useUsers` | member pickers |
+| `useTemplates` | GET `/templates` (optionally filtered by category) + `useTemplate(id)` detail + `useInstantiateTemplate` mutation |
 
 ### UI state store (`src/stores/ui.ts`)
 ```ts
@@ -175,9 +190,9 @@ All runtime validators + TS types live here. The API imports the Zod schemas (`c
 - **Every relative import inside `src/` MUST have the `.js` extension** (even though the source files are `.ts`). This is NodeNext's hard requirement.
 
 Files:
-- `enums.ts` — `LABEL_COLORS`, `LABEL_COLOR_HEX`, `BOARD_BG_PRESETS`, `ACTIVITY_TYPES`, `DUE_FILTER_OPTIONS`.
+- `enums.ts` — `LABEL_COLORS`, `LABEL_COLOR_HEX`, `BOARD_BG_PRESETS`, **`BOARD_BG_IMAGES`** (8 curated Unsplash URLs at `w=1600&q=80`), `ACTIVITY_TYPES`, `DUE_FILTER_OPTIONS`, `TEMPLATE_CATEGORIES`.
 - `positions.ts` — `POSITION_STEP` (65536), `MIN_POSITION_GAP`, `positionBefore/After/Between`, `needsRebalance`.
-- `schemas/*.ts` — one file per entity: `common`, `member`, `board`, `list`, `card`, `label`, `checklist`, `comment`, `activity`, `search`.
+- `schemas/*.ts` — one file per entity: `common` (contains `backgroundSchema` with the 3-way enum), `member`, `board`, `list`, `card`, `label`, `checklist`, `comment`, `activity`, `search`, `template`.
 - `index.ts` — re-exports everything (with `.js` extensions).
 
 ---
@@ -213,20 +228,62 @@ Two separate operations. `PATCH /cards/:id { archivedAt: <ISO> }` archives; `{ a
 ### 7.8 CI has no `lint` step
 `.github/workflows/ci.yml` was changed to `pnpm typecheck && pnpm build`. There is no ESLint config in the repo. Don't wire a lint step without adding a config first.
 
+### 7.9 Tailwind JIT can't see dynamically-assembled class names
+Gradient backgrounds were first implemented as Tailwind classes (`bg-gradient-to-br from-amber-300 to-pink-500`). These only work if Tailwind's JIT sees the exact string at build time. Because the class was stitched together from DB values at runtime, it rendered as nothing.
+**Fix**: store the raw CSS `linear-gradient(...)` string in `backgroundValue` and apply it via `style={{ backgroundImage: bg.value }}`. This bypasses Tailwind entirely. Used in:
+- `BoardPage.tsx` (main canvas)
+- `BoardTile.tsx` (dashboard tiles)
+- `SideNav.tsx` (sidebar board swatches)
+- `TemplateCard.tsx` (template covers)
+Each of those files has a `bg.type === 'gradient'` branch that builds a style object with `backgroundImage`.
+
+### 7.10 Widening `background.type` from 2 to 3 values
+The Prisma schema stores `backgroundType: String` (not an enum) and `backgroundValue: String`. Moving from `'color' | 'image'` to `'color' | 'image' | 'gradient'` was therefore a **code-only change**: update the Zod enum in `packages/shared/src/schemas/common.ts`, widen the TS casts in `apps/api/src/services/mappers.ts` and `templateMappers.ts`, run `pnpm shared:build`. No migration needed. If you ever switch the DB column to a Postgres enum, remember to generate a migration and keep the values in sync.
+
+### 7.11 Template instantiation needs a longer transaction timeout
+`POST /api/templates/:id/instantiate` clones a full board inside a single Prisma `$transaction`. Default `timeout` is 5s, which was tight for the richest templates + pooled Neon connections. Raised to `{ maxWait: 30_000, timeout: 30_000 }`. If you add heavier templates (checklists, covers, etc.), revisit those bounds.
+
+### 7.12 URL-driven filter state without effect loops
+`TopNav` links to `/boards?view=starred` and `/boards?view=recent`. `BoardsHome` reads the param on mount and pre-sets local filter state:
+```ts
+useEffect(() => {
+  const v = searchParams.get('view');
+  if (v && VALID_VIEWS.includes(v)) setFilters((f) => ({ ...f, view: v as BoardView }));
+}, [searchParams.get('view')]);  // intentional narrow dep
+```
+We do **not** mirror subsequent dropdown changes back to the URL — that would cause the same infinite-loop class of bug as 7.4. The URL is the initial-state source only.
+
+### 7.13 `BoardsHome` has two layout modes
+When all filters are at defaults (`search=''`, `view='all'`, `bg='all'`, `sort='recent'`) the page renders the two-section layout (Starred boards / Your boards with the Add tile). Any non-default filter collapses it to a single flat section with a dynamic title. The `showStarredSection` boolean in `BoardsHome.tsx` gates this. Don't delete that branch — it's what preserves the original look when nothing is filtered.
+
+### 7.14 Delete board has two entry points with different post-actions
+- `BoardHeader` (inside a board) → delete → `nav('/boards')` (must leave the now-dead page).
+- `BoardTile` (on the dashboard) → delete → rely on query invalidation to remove the tile in place, no navigation.
+Both use the same `useDeleteBoard` hook and the same confirm-title dialog shape, but the caller decides whether to navigate. Don't add navigation inside the hook itself.
+
+### 7.15 Create Board dialog defaults to Photos tab
+`CreateBoardDialog` opens with `tab='photos'` and `DEFAULT_BG = { type: 'image', value: BOARD_BG_IMAGES[0] }`. This matches the seeded majority (3 of 5 boards use images). If the product switches preference, change the single constant — don't scatter conditions across handlers.
+
 ---
 
 ## 8. Current state of the code (as of last commit)
 
 ### ✅ Complete
 - Monorepo skeleton, tooling, CI
-- Full Prisma schema + migration + seed
-- All API routes (boards, lists, cards, labels, checklists, comments, activities, search, users)
+- Full Prisma schema + migration + seed (default user, 5 demo boards, 6 templates)
+- All API routes (boards, lists, cards, labels, checklists, comments, activities, search, users, **templates**)
 - All web pages + components for MVP
 - Optimistic drag-and-drop for cards
 - Card detail modal: title, description, labels, members, due date, cover, checklists, comments
 - Activity feed rendering in card modal
-- Board backgrounds (color or image URL)
+- **Three-type board backgrounds** — color, image (URL), or CSS gradient; applied consistently in BoardPage, BoardTile, SideNav, TemplateCard
+- **Curated photo gallery** — `BOARD_BG_IMAGES` (8 Unsplash URLs) surfaced in `CreateBoardDialog` via a Photos tab (default)
 - Multi-board workspace (BoardsHome)
+- **Boards filter bar** — search, Show (all/starred/recent), Background (all/color/image/gradient), Sort (recent/oldest/A→Z/Z→A), active-chip row with Clear all
+- **URL-driven view filters** — `/boards?view=starred` and `/boards?view=recent` from top-nav links pre-set the filter state
+- **Templates gallery** (`/templates`) — category tabs, search, sort (default A→Z), hero/side/grid card layouts when sort='popular', `CreateFromTemplateDialog` for naming and instantiating
+- **Template cover → board background** — template's stored `boardBackgroundType/Value` carries over to the new board on instantiate
+- **Delete board** — three-dot menu in `BoardHeader` + hover "More" on `BoardTile`, both behind a confirm-title dialog, atomic via Prisma cascading FKs
 - Global search (SearchResultsPage with deep-links)
 - **Archived items drawer** — opens from "Archived" button in board header, Cards/Lists tabs with search, "Send to board" restore, permanent delete
 - Due-date states (none/today/overdue/complete) with the exact Trello color chips
@@ -254,11 +311,33 @@ Two separate operations. `PATCH /cards/:id { archivedAt: <ISO> }` archives; `{ a
 Run `pnpm dev` then walk through:
 
 **Boards**
-- [ ] `/` shows seeded "Product Launch" tile
+- [ ] `/boards` shows all 5 seeded boards (3 photo, 2 color)
+- [ ] Starred section appears above "Your boards" when nothing is filtered
 - [ ] Create a new board → appears in grid, opens with 3 starter lists + 10 labels
+- [ ] Create Board dialog opens on the **Photos** tab with first image pre-selected
+- [ ] Switch to Colors tab → pick a preset → create → new board has color background
 - [ ] Star toggle works (star icon fills, board re-sorts to top)
 - [ ] Rename inline (click title → edit → blur/enter)
 - [ ] Archive board via header menu → disappears from list
+- [ ] Delete board via header three-dot menu → confirm dialog → navigates to `/boards`, tile gone
+- [ ] Hover a dashboard tile → "More" shows → Delete board → confirm → tile removed in place
+
+**Boards filter bar**
+- [ ] Top-nav "Starred" link → URL becomes `/boards?view=starred`, filter chip shows
+- [ ] Top-nav "Recent" link → URL becomes `/boards?view=recent`, recency sort applied
+- [ ] Typing in the search input narrows the list live; chip shows `"query"`
+- [ ] Background dropdown filters to only photo / only color boards
+- [ ] Sort: A→Z / Z→A / Oldest produce deterministic order
+- [ ] Clear all → returns to default two-section layout
+
+**Templates**
+- [ ] `/templates` shows all 6 seed templates
+- [ ] Default sort is A → Z (not popular-first)
+- [ ] Category tabs filter the list
+- [ ] Search input narrows by title + description
+- [ ] Switch sort back to Popular → featured hero + side tiles appear
+- [ ] "Use template" on a photo-cover template → name board → open → background matches template cover
+- [ ] "Use template" on a gradient template (Daily Task Tracker / Business Plan) → board has gradient background
 
 **Lists**
 - [ ] Add list (right-most "+ Add another list") → appears
@@ -369,12 +448,23 @@ Push to `main` → Render + Vercel auto-deploy.
 - `apps/api/prisma/schema.prisma` — data model
 - `apps/api/prisma/seed.ts` — default user + sample board
 - `apps/web/src/App.tsx` — routes
+- `apps/web/src/routes/BoardsHome.tsx` — dashboard + filter bar wiring + URL view param
 - `apps/web/src/routes/BoardPage.tsx` — board orchestration + URL sync
+- `apps/web/src/routes/TemplatesPage.tsx` — templates gallery
 - `apps/web/src/components/board/BoardCanvas.tsx` — dnd-kit root
+- `apps/web/src/components/board/BoardHeader.tsx` — board title + three-dot menu + delete-board dialog
+- `apps/web/src/components/boards/BoardsFilterBar.tsx` — dashboard search/show/bg/sort
+- `apps/web/src/components/boards/BoardTile.tsx` — dashboard tile + hover "More" delete
+- `apps/web/src/components/boards/CreateBoardDialog.tsx` — Colors/Photos tabs, default Photos
 - `apps/web/src/components/card/CardDetailModal.tsx` — biggest component
 - `apps/web/src/components/board/ArchivedItemsDrawer.tsx` — archive UI
+- `apps/web/src/components/templates/CreateFromTemplateDialog.tsx` — template instantiation flow
 - `apps/web/src/stores/ui.ts` — all client UI state
+- `apps/api/src/routes/templates.ts` — templates routes, including `$transaction`-wrapped instantiate
+- `apps/api/prisma/seed.ts` — user + 5 boards + 6 templates
 - `packages/shared/src/index.ts` — shared exports
+- `packages/shared/src/schemas/common.ts` — `backgroundSchema` (3-way type enum)
+- `packages/shared/src/enums.ts` — `BOARD_BG_IMAGES`, `BOARD_BG_PRESETS`, `TEMPLATE_CATEGORIES`
 - `packages/shared/src/positions.ts` — fractional positioning math
 - `README.md` — user-facing setup
 - `DEPLOYMENT.md` — production deploy
@@ -391,6 +481,9 @@ Push to `main` → Render + Vercel auto-deploy.
 - [ ] Unit tests (Vitest) + E2E tests (Playwright)
 - [ ] Keyboard shortcuts (C to create card, / to focus search)
 - [ ] Dark mode
+- [ ] Productivity stats view (completed-cards-per-day chart over a selected date range, built off the existing `/api/boards/:boardId/activities` feed)
+- [ ] Custom template authoring (save any board as a template)
+- [ ] Persist filter-bar state to `localStorage` so dashboards remember how the user left them
 
 ---
 

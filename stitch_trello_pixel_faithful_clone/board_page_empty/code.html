@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#a76500",
+                        "on-tertiary-fixed": "#2c1700",
+                        "error": "#ba1a1a",
+                        "surface-container": "#e8edff",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-variant": "#d7e2ff",
+                        "secondary-fixed-dim": "#7edc6a",
+                        "inverse-surface": "#1d3052",
+                        "background": "#f9f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#041b3c",
+                        "on-secondary-fixed": "#002200",
+                        "secondary-fixed": "#99f983",
+                        "on-surface-variant": "#404751",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#00629d",
+                        "on-background": "#041b3c",
+                        "outline": "#707882",
+                        "surface-container-low": "#f1f3ff",
+                        "surface-dim": "#cadaff",
+                        "on-primary-fixed": "#001d33",
+                        "surface-bright": "#f9f9ff",
+                        "inverse-primary": "#98cbff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#d7e2ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c0c7d2",
+                        "inverse-on-surface": "#edf0ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#97f680",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-fixed-variant": "#025300",
+                        "secondary": "#066e02",
+                        "primary": "#005f98",
+                        "on-primary-fixed-variant": "#004a77",
+                        "on-primary-container": "#fbfbff",
+                        "tertiary-fixed-dim": "#ffb86b",
+                        "tertiary-fixed": "#ffdcbc",
+                        "surface-container-high": "#e0e8ff",
+                        "surface": "#f9f9ff",
+                        "on-secondary-container": "#107308",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#683d00",
+                        "tertiary": "#854f00",
+                        "primary-fixed-dim": "#98cbff",
+                        "primary-container": "#0079bf"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .board-canvas {
+            background-color: #0079BF;
+            height: calc(100vh - 48px);
+            margin-top: 48px;
+            margin-left: 260px;
+        }
+        .editorial-shadow {
+            box-shadow: 0 12px 24px -4px rgba(4, 27, 60, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface overflow-hidden">
+<!-- TopNavBar -->
+<nav class="flex justify-between items-center w-full px-4 h-12 fixed top-0 z-50 bg-[#0079BF] dark:bg-slate-900 shadow-sm">
+<div class="flex items-center gap-6">
+<span class="text-xl font-black text-white tracking-tighter font-headline">Trello</span>
+<div class="hidden md:flex items-center gap-4">
+<a class="text-white font-bold border-b-2 border-white pb-1 font-['Inter'] text-sm" href="#">Workspaces</a>
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm hover:bg-white/20 transition-colors px-2 py-1 rounded" href="#">Recent</a>
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm hover:bg-white/20 transition-colors px-2 py-1 rounded" href="#">Starred</a>
+<button class="bg-white/20 text-white px-3 py-1.5 rounded-sm font-medium text-sm hover:bg-white/30 transition-colors">Create</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative hidden sm:block">
+<input class="bg-white/20 border-none text-white placeholder-white/70 text-sm rounded-sm px-3 py-1.5 w-48 focus:ring-1 focus:ring-white/50" placeholder="Search" type="text"/>
+</div>
+<button class="text-white hover:bg-white/20 p-1.5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+</button>
+<button class="text-white hover:bg-white/20 p-1.5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="help">help</span>
+</button>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border border-white/20" data-alt="close-up portrait of a professional woman with a friendly smile, soft natural lighting, minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBriR0AfSei_qGPP1qp4kkV2-7CYf0lKA6x3A3Fi5QalRfsyMhRB_qNiSkdkm0ae-9PyvMOXs8VGUA6o-i29WTsjRmLOw4l8JtXWelJgqGfP4aWpc7CPsrUFzCOiHdrHcuPPAo9ilgAQ2iqCPgR8CXhN0ZvYJFoDJEKdXuRLw2vLX0E_9vCNbTWrkBxWPBv-xzFBWHG0uII4YUywuk5iKyfWzwVu7SmksJZE1NCIbp8lpWn9kwdx2XUKZyRctMUYXiMjzvnDHHE3YI"/>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 bottom-0 w-[260px] flex flex-col p-3 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 font-['Inter'] text-[0.875rem] leading-relaxed">
+<div class="flex items-center gap-3 px-3 py-4 mb-4 tonal-shift bg-slate-50 dark:bg-slate-900 rounded-lg">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-white font-bold">W</div>
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Workspace Name</span>
+<span class="text-xs text-on-surface-variant">Free Plan</span>
+</div>
+</div>
+<nav class="flex-1">
+<a class="px-3 py-2 my-1 flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 text-[#005f98] dark:text-blue-200 font-semibold rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Boards</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard_customize">dashboard_customize</span>
+<span>Templates</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span>Home</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Members</span>
+</a>
+</div>
+</aside>
+<!-- Main Board Canvas -->
+<main class="board-canvas relative flex flex-col overflow-hidden">
+<!-- Board Header (Active State Identity) -->
+<header class="flex items-center justify-between px-4 py-3 bg-black/10 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<h1 class="text-white text-xl font-extrabold tracking-tight">Project Editorial Canvas</h1>
+<button class="text-white hover:bg-white/20 p-1.5 rounded transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="star">star</span>
+</button>
+<div class="h-4 w-px bg-white/30 mx-1"></div>
+<button class="bg-white/20 text-white px-3 py-1.5 rounded-sm font-medium text-xs flex items-center gap-2 hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="group">group</span>
+                    Workspace visible
+                </button>
+<div class="h-4 w-px bg-white/30 mx-1"></div>
+<button class="bg-white/20 text-white px-3 py-1.5 rounded-sm font-medium text-xs flex items-center gap-2 hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="leaderboard">leaderboard</span>
+                    Board
+                </button>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-white hover:bg-white/20 p-1.5 rounded transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="filter_list">filter_list</span>
+</button>
+<div class="flex -space-x-2">
+<img alt="Member 1" class="w-8 h-8 rounded-full border-2 border-[#0079BF]" data-alt="creative professional portrait with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Q6SJz5DBSXoffIQ2UJiM71O73fdqgLI_Wjjg_-9yHbNU4E29TBhbQkUNfpXQL9LvKh7SZ_kapxDvfoDeC0yi_cQSoIDW2P9t9zkFo_53U9snYomPTfLhXcCtDFzP_1Bf9zuDqW_htTCXwlqsd5CUiae7DZB3_TiVSJ4IE2cusgcHenZ2sH9cvgzR_suErth61Jj-Yo1iFfl55qAZ1lG7wydJPS2CqqdG1gR-F6aS4N9jFY_acRtqTRQH3YQhXb9apqCjTiWqDRc"/>
+<img alt="Member 2" class="w-8 h-8 rounded-full border-2 border-[#0079BF]" data-alt="modern designer headshot with soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaYk1OTfj3Azz_CetVPE7gGaJ7NL1JkYMTCgBljSlgUgDOSOzls23lulPSIfGy44-efuYSoZBPEV2FmIcl4n6ftTZQnUY1pyEllMZJ_W6okdWzKu9pNHDZia9N8ZISUKvrprPsPVL39O1Yr7EIsjwcGq5SJwT2W8bAzJjIcNIvS3J0WUweY2r1jRMdkEm1koQI_BqpQ5NuIwHGaE5mvhKkxWhPFhJpDe27tRwL7tbazbBNv_gyS25JZyuAJpjRoR-QwNe8U4noUT8"/>
+<div class="w-8 h-8 rounded-full border-2 border-[#0079BF] bg-white/20 flex items-center justify-center text-white text-xs font-bold">+3</div>
+</div>
+<button class="bg-white text-primary px-4 py-1.5 rounded-sm font-bold text-sm hover:bg-white/90 transition-all editorial-shadow flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+                    Share
+                </button>
+<button class="text-white hover:bg-white/20 p-1.5 rounded transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Empty State Content -->
+<div class="flex-1 flex items-center justify-center p-8">
+<div class="max-w-md w-full text-center space-y-8 animate-in fade-in duration-700">
+<!-- Editorial Empty State Illustration -->
+<div class="relative group">
+<div class="absolute inset-0 bg-white/5 blur-3xl rounded-full scale-150"></div>
+<div class="relative flex justify-center mb-8">
+<div class="w-64 h-64 bg-surface-container-lowest/10 backdrop-blur-xl border border-white/10 rounded-xl editorial-shadow flex items-center justify-center rotate-3 transform transition-transform group-hover:rotate-0">
+<div class="w-48 h-48 bg-surface-container-lowest/20 rounded-lg border border-white/5 flex flex-col p-4 gap-4">
+<div class="h-4 w-2/3 bg-white/20 rounded"></div>
+<div class="h-12 w-full bg-white/10 rounded"></div>
+<div class="h-4 w-1/2 bg-white/20 rounded"></div>
+<div class="mt-auto flex justify-end">
+<div class="w-8 h-8 rounded-full bg-white/30"></div>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-4 -right-4 w-32 h-32 bg-white/5 backdrop-blur-md rounded-lg border border-white/10 rotate-[-12deg] flex flex-col p-3 gap-2">
+<div class="h-2 w-3/4 bg-white/20 rounded"></div>
+<div class="h-8 w-full bg-white/10 rounded"></div>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h2 class="text-white text-3xl font-extrabold tracking-tight font-headline">A clean slate for your best work.</h2>
+<p class="text-white/80 text-lg font-medium leading-relaxed max-w-sm mx-auto">
+                        Your board is currently an empty canvas. Start organizing by adding your first list of tasks or milestones.
+                    </p>
+</div>
+<div class="flex flex-col items-center gap-4">
+<button class="group relative px-8 py-4 bg-white text-primary font-extrabold rounded-lg editorial-shadow transition-all hover:scale-105 active:scale-95 overflow-hidden">
+<span class="relative z-10 flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                            Add the first list
+                        </span>
+<div class="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+<button class="text-white/60 hover:text-white transition-colors flex items-center gap-2 text-sm font-semibold">
+<span class="material-symbols-outlined text-base" data-icon="auto_awesome">auto_awesome</span>
+                        Start with a template instead
+                    </button>
+</div>
+</div>
+</div>
+<!-- Floating Quick Actions (FAB) -->
+<div class="absolute bottom-6 right-6">
+<button class="w-14 h-14 bg-white text-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all group">
+<span class="material-symbols-outlined text-2xl" data-icon="bolt">bolt</span>
+<span class="absolute right-full mr-4 bg-on-surface text-white px-3 py-1.5 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity">Automate this board</span>
+</button>
+</div>
+</main>
+</body></html>

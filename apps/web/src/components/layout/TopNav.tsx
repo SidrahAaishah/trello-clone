@@ -66,10 +66,16 @@ export function TopNav() {
             <Link to="/boards" className="text-white/80 hover:text-white text-sm font-medium">
               Workspaces
             </Link>
-            <Link to="/boards" className="text-white/80 hover:text-white text-sm font-medium">
+            <Link
+              to="/boards?view=recent"
+              className="text-white/80 hover:text-white text-sm font-medium"
+            >
               Recent
             </Link>
-            <Link to="/boards" className="text-white/80 hover:text-white text-sm font-medium">
+            <Link
+              to="/boards?view=starred"
+              className="text-white/80 hover:text-white text-sm font-medium"
+            >
               Starred
             </Link>
             <button

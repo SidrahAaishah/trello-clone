@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trello Board - Active View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "tertiary-container": "#a76500",
+                "on-tertiary-fixed": "#2c1700",
+                "error": "#ba1a1a",
+                "surface-container": "#e8edff",
+                "primary-fixed": "#cfe5ff",
+                "surface-variant": "#d7e2ff",
+                "secondary-fixed-dim": "#7edc6a",
+                "inverse-surface": "#1d3052",
+                "background": "#f9f9ff",
+                "surface-container-lowest": "#ffffff",
+                "on-surface": "#041b3c",
+                "on-secondary-fixed": "#002200",
+                "secondary-fixed": "#99f983",
+                "on-surface-variant": "#404751",
+                "error-container": "#ffdad6",
+                "surface-tint": "#00629d",
+                "on-background": "#041b3c",
+                "outline": "#707882",
+                "surface-container-low": "#f1f3ff",
+                "surface-dim": "#cadaff",
+                "on-primary-fixed": "#001d33",
+                "surface-bright": "#f9f9ff",
+                "inverse-primary": "#98cbff",
+                "on-error": "#ffffff",
+                "surface-container-highest": "#d7e2ff",
+                "on-secondary": "#ffffff",
+                "outline-variant": "#c0c7d2",
+                "inverse-on-surface": "#edf0ff",
+                "on-tertiary": "#ffffff",
+                "secondary-container": "#97f680",
+                "on-tertiary-container": "#fffbff",
+                "on-secondary-fixed-variant": "#025300",
+                "secondary": "#066e02",
+                "primary": "#005f98",
+                "on-primary-fixed-variant": "#004a77",
+                "on-primary-container": "#fbfbff",
+                "tertiary-fixed-dim": "#ffb86b",
+                "tertiary-fixed": "#ffdcbc",
+                "surface-container-high": "#e0e8ff",
+                "surface": "#f9f9ff",
+                "on-secondary-container": "#107308",
+                "on-error-container": "#93000a",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed-variant": "#683d00",
+                "tertiary": "#854f00",
+                "primary-fixed-dim": "#98cbff",
+                "primary-container": "#0079bf"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "fontFamily": {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-4 h-12 fixed top-0 z-50 bg-[#0079BF] dark:bg-slate-900 shadow-sm">
+<div class="flex items-center gap-6">
+<div class="text-xl font-black text-white tracking-tighter">Trello</div>
+<nav class="hidden md:flex items-center gap-4">
+<a class="font-['Inter'] text-sm font-medium text-white font-bold border-b-2 border-white pb-1" href="#">Workspaces</a>
+<a class="font-['Inter'] text-sm font-medium text-white/80 hover:text-white hover:bg-white/20 transition-colors px-2 py-1 rounded" href="#">Recent</a>
+<a class="font-['Inter'] text-sm font-medium text-white/80 hover:text-white hover:bg-white/20 transition-colors px-2 py-1 rounded" href="#">Starred</a>
+<button class="bg-white/20 text-white px-3 py-1 rounded font-medium text-sm hover:bg-white/30 transition-colors">Create</button>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative flex items-center">
+<input class="bg-white/20 border-none rounded text-white text-sm placeholder-white/70 px-3 py-1 focus:ring-1 focus:ring-white w-48 transition-all focus:w-64" placeholder="Search" type="text"/>
+</div>
+<button class="text-white hover:bg-white/20 p-1.5 rounded transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="text-white hover:bg-white/20 p-1.5 rounded transition-colors">
+<span class="material-symbols-outlined text-xl">help</span>
+</button>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border-2 border-white/20" data-alt="Close-up professional portrait of a smiling designer in a brightly lit studio environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-M6oAI23IVqx1Go610a840MLkK65hmTd7lCjOM5jflfzO2SGZ66ig19o-j0omSSGbAF8_U3zBjo_He6qVa2N3gXdkjoc9ByMBvLzLL4plnWvKFRkSbnxXooHwaRRt_pbvMGT_4BPff2FEPh9rQjrh2gOSGLa-zEO5CFzlJAUhpkOk-P99oJASJOYmWEIpCCojW5lt_8qyxkP7EFa0QrhKpLkMAXLeR5ZYONrBTbXK3saQvPeUj8qA3EoBRJrc4tRentJTHaSRvlE"/>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 bottom-0 w-[260px] flex flex-col p-3 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+<div class="flex items-center gap-3 px-3 py-4 mb-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-white font-bold">W</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Workspace Name</span>
+<span class="text-xs text-slate-500">Free Plan</span>
+</div>
+</div>
+<nav class="flex-1">
+<a class="px-3 py-2 my-1 flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 text-[#005f98] dark:text-blue-200 font-semibold rounded-md transition-all" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="text-[0.875rem]">Boards</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined text-xl">dashboard_customize</span>
+<span class="text-[0.875rem]">Templates</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined text-xl">home</span>
+<span class="text-[0.875rem]">Home</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="text-[0.875rem]">Settings</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined text-xl">group</span>
+<span class="text-[0.875rem]">Members</span>
+</a>
+</div>
+</aside>
+<!-- Main Board Canvas -->
+<main class="ml-[260px] mt-12 p-6 min-h-[calc(100vh-48px)] bg-cover bg-center" data-alt="Majestic mountain peaks under a clear blue sky with soft morning light illuminating the granite textures" style="background-image: linear-gradient(rgba(0, 95, 152, 0.1), rgba(0, 95, 152, 0.1)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4n-4_ZzC0m9LdUUXMG-Mv4Ad5pBJ6Qv5iToSCeFWM5YkLSaGnlNsIMX24TAhuTnlRn65zQ6pjJVEx59J-wPi3xU_rZ7uncr2wDL0e8NvWDROdOptYMqHHGTfQeJc9z-tMndS7LAF-QFoAPxV6WGGAhL_qHYfYxxKlzUE2p93KZIndjF7Tw1YeYcC31hUpt8zTmGf7YNeRRgKroxbmCrkj1r_lzcVwLzHr_DXwCvFtJ1gUHCUZhD2cH5AmVHViWdhu4XLSPwoFo0E');">
+<!-- Board Header -->
+<header class="flex items-center justify-between mb-8 backdrop-blur-md bg-white/10 p-4 rounded-xl">
+<div class="flex items-center gap-4">
+<h1 class="text-2xl font-extrabold text-white tracking-tight">Editorial Strategy 2024</h1>
+<button class="text-white/80 hover:text-white p-1 rounded transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+<div class="h-6 w-px bg-white/20 mx-2"></div>
+<div class="flex -space-x-2">
+<img alt="Member" class="w-8 h-8 rounded-full border-2 border-primary" data-alt="Portrait of a young woman with a warm expression and natural lighting in a contemporary workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY7ocCVrpUpu78iAy7gF9rATkMgtf3Fl33ihZGvP6mqaleaUyZIUwbZyygbzJmxQIvErprOohGmmWYjEfOLCZnSw7I0sqRt787-m6Q_qVJAE-TiD0n2ZY6xkujKTs2NjbqvTMNZGtxgi0Jz4InooPlsNiRLFNMACFnAGY6gFzDUfD8ROn3PP0Cc9eUPo0I3YNcbQCfhqKisAJHzPPPqJpKIH1s3JdcqsxrS9dfU6oBQLkl1nKuZ1mw2Cv6k5eS3O2l6N1TiRLhQSQ"/>
+<img alt="Member" class="w-8 h-8 rounded-full border-2 border-primary" data-alt="Headshot of a creative professional with a friendly smile wearing a casual denim shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB_UVvv8NZ5FAfQVWCBMJzbt8IxZsSVhvoYfEuU2mlB_99NSQSTpbPB2-79oQASpzFsIM7rBAM_Im0nwRe3AvyAqu6IUaHsGqqorlMI_J0-W3lzuPMvpUqyzAcun_BvHwL7-QIPPrNmeREPKubuMezDxdawJGPJBcOe7p27owVmZd-aaDnPYCygIKWlu4cSRECXyDxcXA_OBfmSp5ehwbyoF4-MKd9BP2F8uf1E34g2gYKrT6Jw453ZLqb6ezCivGgAU4-F7pCzyQ"/>
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">+4</div>
+</div>
+<button class="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-sm text-sm font-medium transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">person_add</span>
+                    Share
+                </button>
+</div>
+<button class="bg-white/20 hover:bg-white/30 text-white p-2 rounded-sm transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</header>
+<!-- The List Grid -->
+<div class="flex gap-6 items-start overflow-x-auto pb-4 h-full">
+<!-- List: To Do (Expanded Form State) -->
+<section class="w-80 shrink-0 bg-surface-container rounded-md flex flex-col max-h-full shadow-sm">
+<div class="p-3 flex items-center justify-between">
+<h2 class="text-sm font-bold text-on-surface-variant px-1 uppercase tracking-wider">To Do</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer p-1 hover:bg-black/5 rounded">more_horiz</span>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-2 pb-2">
+<!-- Existing Cards -->
+<article class="bg-surface-container-lowest p-3 rounded-lg shadow-[0_1px_0_rgba(9,30,66,0.25)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="flex gap-1 mb-2">
+<span class="h-2 w-10 rounded-full bg-[#61BD4F]"></span>
+</div>
+<p class="text-[0.875rem] text-on-surface leading-snug">Research editorial trends for Q3 2024 fashion issue</p>
+<div class="mt-3 flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">subject</span>
+<span class="material-symbols-outlined text-sm">chat_bubble_outline</span>
+</div>
+</article>
+<!-- Expanded Quick-Add Card Form -->
+<div class="bg-surface-container-lowest rounded-lg shadow-lg p-3 space-y-3">
+<textarea autofocus="" class="w-full border-none p-0 focus:ring-0 text-[0.875rem] text-on-surface placeholder-on-surface-variant/50 resize-none min-h-[64px]" placeholder="Enter a title for this card..."></textarea>
+<div class="flex items-center gap-2">
+<button class="bg-primary text-white px-3 py-1.5 rounded-sm font-semibold text-sm hover:bg-primary-container transition-colors">Add card</button>
+<button class="p-1.5 text-on-surface-variant hover:bg-black/5 rounded transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- List: In Progress -->
+<section class="w-80 shrink-0 bg-surface-container rounded-md flex flex-col max-h-full shadow-sm">
+<div class="p-3 flex items-center justify-between">
+<h2 class="text-sm font-bold text-on-surface-variant px-1 uppercase tracking-wider">In Progress</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer p-1 hover:bg-black/5 rounded">more_horiz</span>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-2 pb-2">
+<article class="bg-surface-container-lowest p-3 rounded-lg shadow-[0_1px_0_rgba(9,30,66,0.25)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="flex gap-1 mb-2">
+<span class="h-2 w-10 rounded-full bg-[#EB5A46]"></span>
+</div>
+<p class="text-[0.875rem] text-on-surface leading-snug">Design prototype for new magazine subscription page</p>
+<div class="mt-3 flex items-center justify-between">
+<div class="flex gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">attachment</span>
+<span class="text-xs font-medium">2</span>
+</div>
+<img alt="Assignee" class="w-6 h-6 rounded-full" data-alt="Friendly male face with spectacles in a bright airy studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCfFhcNDEciVFXLrJxGfypAI3dWBWOrjJLLrBK8uMDeYaHmKWXiHFWmUTdOdbFE1-c5qpKBZw-5sM-K4JWaR9LHTtCiy98-Bmlcsya4bIpBBRulfkLRQabS40Hh8e-A_dtcPuVUdVGkPUakg0yQxbG92bimoJQG_KNsWnoW67qMR7VQ1-2NEmMKKvcexg6nqXndpd_G5wyESTnHUNhcxd8BNCCEmzlOuLPH9Je29jSwDa9KpWC8S1eTv-s-xKQwNNjct_prtMR6lI"/>
+</div>
+</article>
+<button class="w-full flex items-center gap-2 px-2 py-2 text-on-surface-variant hover:bg-black/5 hover:text-on-surface rounded-md transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Add a card
+                    </button>
+</div>
+</section>
+<!-- List: Review -->
+<section class="w-80 shrink-0 bg-surface-container rounded-md flex flex-col max-h-full shadow-sm">
+<div class="p-3 flex items-center justify-between">
+<h2 class="text-sm font-bold text-on-surface-variant px-1 uppercase tracking-wider">Review</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer p-1 hover:bg-black/5 rounded">more_horiz</span>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-2 pb-2">
+<article class="bg-surface-container-lowest p-3 rounded-lg shadow-[0_1px_0_rgba(9,30,66,0.25)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="flex gap-1 mb-2">
+<span class="h-2 w-10 rounded-full bg-[#C377E0]"></span>
+</div>
+<p class="text-[0.875rem] text-on-surface leading-snug">Final copy edit for "Minimalism in the Digital Age" article</p>
+<div class="mt-3 flex items-center justify-between">
+<div class="bg-tertiary-container/10 text-tertiary px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-[10px] font-bold">JUL 24</span>
+</div>
+<div class="flex -space-x-1.5">
+<img alt="Assignee" class="w-6 h-6 rounded-full border border-surface-container-lowest" data-alt="Smiling portrait of professional woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyMgkj8v54FdkvpEq4Q8WTNDEo_ZfZBSuvwoJ9aIDezjTOAOAjcgvY4wWon9ALG654wCOtM7-hOhenmQWyR9HNKZSEonsTT4qtgBobgFMD8TRkEEJCAyqC__O2sKnmqBHlmD2vZL3UGs9UhWJnn1c1YQHlcNNbKJikpa6EGwLnJJ3CdSAVMvpWbg7niBcVO7YeFCcb2-PFvt4vh_AvFT_BwzAWmjI9DQot-fStVITTXJybVMTG-Dy-IKrcODYOQdGi1Kbc7_m8H5U"/>
+<div class="w-6 h-6 rounded-full border border-surface-container-lowest bg-surface-variant flex items-center justify-center text-[10px] font-bold">+1</div>
+</div>
+</div>
+</article>
+<button class="w-full flex items-center gap-2 px-2 py-2 text-on-surface-variant hover:bg-black/5 hover:text-on-surface rounded-md transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Add a card
+                    </button>
+</div>
+</section>
+<!-- List: Done -->
+<section class="w-80 shrink-0 bg-surface-container rounded-md flex flex-col max-h-full shadow-sm opacity-90">
+<div class="p-3 flex items-center justify-between">
+<h2 class="text-sm font-bold text-on-surface-variant px-1 uppercase tracking-wider">Done</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer p-1 hover:bg-black/5 rounded">more_horiz</span>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-2 pb-2">
+<article class="bg-surface-container-lowest p-3 rounded-lg shadow-[0_1px_0_rgba(9,30,66,0.25)] hover:shadow-md transition-shadow group cursor-pointer">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-[#61BD4F]/20 text-[#61BD4F] px-1.5 py-0.5 rounded text-[10px] font-bold uppercase">Complete</span>
+</div>
+<p class="text-[0.875rem] text-on-surface-variant line-through leading-snug">Identify photographer for July cover shoot</p>
+</article>
+<button class="w-full flex items-center gap-2 px-2 py-2 text-on-surface-variant hover:bg-black/5 hover:text-on-surface rounded-md transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Add a card
+                    </button>
+</div>
+</section>
+<!-- Add another list -->
+<button class="w-80 shrink-0 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white p-3 rounded-md flex items-center gap-2 font-medium transition-all">
+<span class="material-symbols-outlined">add</span>
+                Add another list
+            </button>
+</div>
+</main>
+</body></html>

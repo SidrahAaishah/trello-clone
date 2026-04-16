@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trello - Your Boards</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#a76500",
+                    "on-tertiary-fixed": "#2c1700",
+                    "error": "#ba1a1a",
+                    "surface-container": "#e8edff",
+                    "primary-fixed": "#cfe5ff",
+                    "surface-variant": "#d7e2ff",
+                    "secondary-fixed-dim": "#7edc6a",
+                    "inverse-surface": "#1d3052",
+                    "background": "#f9f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#041b3c",
+                    "on-secondary-fixed": "#002200",
+                    "secondary-fixed": "#99f983",
+                    "on-surface-variant": "#404751",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#00629d",
+                    "on-background": "#041b3c",
+                    "outline": "#707882",
+                    "surface-container-low": "#f1f3ff",
+                    "surface-dim": "#cadaff",
+                    "on-primary-fixed": "#001d33",
+                    "surface-bright": "#f9f9ff",
+                    "inverse-primary": "#98cbff",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#d7e2ff",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#c0c7d2",
+                    "inverse-on-surface": "#edf0ff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#97f680",
+                    "on-tertiary-container": "#fffbff",
+                    "on-secondary-fixed-variant": "#025300",
+                    "secondary": "#066e02",
+                    "primary": "#005f98",
+                    "on-primary-fixed-variant": "#004a77",
+                    "on-primary-container": "#fbfbff",
+                    "tertiary-fixed-dim": "#ffb86b",
+                    "tertiary-fixed": "#ffdcbc",
+                    "surface-container-high": "#e0e8ff",
+                    "surface": "#f9f9ff",
+                    "on-secondary-container": "#107308",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#683d00",
+                    "tertiary": "#854f00",
+                    "primary-fixed-dim": "#98cbff",
+                    "primary-container": "#0079bf"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-shadow-sm {
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface m-0 p-0 antialiased">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-4 h-12 fixed top-0 z-50 bg-[#0079BF] dark:bg-slate-900 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black text-white tracking-tighter">Trello</span>
+<nav class="hidden md:flex items-center gap-4 ml-4">
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm font-medium hover:bg-white/20 transition-colors px-2 py-1 rounded" href="#">Workspaces</a>
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm font-medium hover:bg-white/20 transition-colors px-2 py-1 rounded" href="#">Recent</a>
+<a class="text-white/80 hover:text-white font-['Inter'] text-sm font-medium hover:bg-white/20 transition-colors px-2 py-1 rounded" href="#">Starred</a>
+<button class="bg-white/20 text-white px-3 py-1 rounded font-medium text-sm hover:bg-white/30 transition-colors">Create</button>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative hidden sm:block">
+<input class="bg-white/20 border-none text-white placeholder-white/70 text-sm rounded h-8 pl-8 focus:ring-1 focus:ring-white w-64" placeholder="Search" type="text"/>
+<span class="material-symbols-outlined absolute left-2 top-1.5 text-white text-sm" data-icon="search">search</span>
+</div>
+<button class="text-white/80 hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-white/80 hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border border-white/20 object-cover" data-alt="Close-up portrait of a professional male designer with a friendly expression in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2FDMddboLofkIEWkCDMdgIAYG9zRjycNQnqZW9hnBoJFRwMqTHMqM41S_RjJ0hwBYhzbj0L6qUCUl-p_J9Jnu0bLqxEIQjBPKD2Y_Z8U1_e-mRCi8qCxCK1wf-IduvoSL3RFAYvvQ0ywkXTDEfRRn_4WKnDql3a0WLsC0mU2fFsqKTc3hDKo3HH0cO1DtAz1nf43lf1a3G7dXGK4zf5FK3vpjDmdA5sZcLpJI8wUI8TmM2VEymE-X-jdOoBtBUktIL1-6_2cukL4"/>
+</div>
+</header>
+<!-- Shell Container -->
+<div class="flex pt-12">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 bottom-0 w-[260px] flex flex-col p-3 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 font-['Inter'] text-[0.875rem] leading-relaxed">
+<div class="flex items-center gap-3 px-3 py-4 mb-2">
+<div class="w-8 h-8 rounded bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white font-bold">W</div>
+<div>
+<div class="font-semibold text-slate-900 dark:text-white">Workspace Name</div>
+<div class="text-xs text-slate-500">Free Plan</div>
+</div>
+</div>
+<nav class="flex-grow">
+<a class="px-3 py-2 my-1 flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 text-[#005f98] dark:text-blue-200 font-semibold rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Boards</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard_customize">dashboard_customize</span>
+<span>Templates</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span>Home</span>
+</a>
+</nav>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-4 mt-auto">
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="px-3 py-2 my-1 flex items-center gap-3 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Members</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] flex-grow min-h-screen bg-surface p-8">
+<div class="max-w-5xl mx-auto">
+<header class="mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface/70" data-icon="person">person</span>
+<h1 class="text-xl font-bold tracking-tight text-on-surface">Your boards</h1>
+</header>
+<!-- Board Tiles Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- 1. Photo Background -->
+<div class="relative w-[200px] h-[96px] rounded-lg overflow-hidden group cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] hover:shadow-xl transition-all duration-200">
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors z-10"></div>
+<img alt="Valley Landscape" class="absolute inset-0 w-full h-full object-cover z-0 scale-105 group-hover:scale-100 transition-transform duration-500" data-alt="Panoramic view of a lush valley with mountains in the background during a clear morning with vibrant natural colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkmsCv43g-qFEtweS1oUQwjwf6N3FUDDj3cr6HiNtSHH4YpFU0K96yb9x_SvY45G5L3WeAfNGK5riyh9Q8AcNYfTWi2vnqGsiXx5Z58WPV9EH4tIYkoPL95SQbb3IvnjJe_LgUG8MMTNJ1puNlFqGp4u0vH_85aHhess8apn5xdl8E5Uawn4Eajoqjd3xdlyZhWwjaTt2YB9_Bm--TkzD8OB_DiGo4wpl-z2tplLSzoHqmhK4-nccNyQ0mP6SHM6m06lueRDlZFS0"/>
+<span class="absolute bottom-2 left-3 z-20 text-white font-bold text-shadow-sm text-[0.875rem]">Product Launch</span>
+</div>
+<!-- 2. Primary Blue -->
+<div class="relative w-[200px] h-[96px] rounded-lg bg-[#0079BF] hover:brightness-90 cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] transition-all p-3">
+<span class="absolute bottom-2 left-3 text-white font-bold text-shadow-sm text-[0.875rem]">Engineering</span>
+</div>
+<!-- 3. Amber/Orange -->
+<div class="relative w-[200px] h-[96px] rounded-lg bg-[#D29034] hover:brightness-90 cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] transition-all p-3">
+<span class="absolute bottom-2 left-3 text-white font-bold text-shadow-sm text-[0.875rem]">Marketing Strategy</span>
+</div>
+<!-- 4. Forest Green -->
+<div class="relative w-[200px] h-[96px] rounded-lg bg-[#519839] hover:brightness-90 cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] transition-all p-3">
+<span class="absolute bottom-2 left-3 text-white font-bold text-shadow-sm text-[0.875rem]">Sustainability</span>
+</div>
+<!-- 5. Deep Red -->
+<div class="relative w-[200px] h-[96px] rounded-lg bg-[#B04632] hover:brightness-90 cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] transition-all p-3">
+<span class="absolute bottom-2 left-3 text-white font-bold text-shadow-sm text-[0.875rem]">Quarterly Planning</span>
+</div>
+<!-- 6. Royal Purple -->
+<div class="relative w-[200px] h-[96px] rounded-lg bg-[#89609E] hover:brightness-90 cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] transition-all p-3">
+<span class="absolute bottom-2 left-3 text-white font-bold text-shadow-sm text-[0.875rem]">Creative Assets</span>
+</div>
+<!-- 7. Magenta -->
+<div class="relative w-[200px] h-[96px] rounded-lg bg-[#CD5A91] hover:brightness-90 cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] transition-all p-3">
+<span class="absolute bottom-2 left-3 text-white font-bold text-shadow-sm text-[0.875rem]">Social Media</span>
+</div>
+<!-- 8. Bright Green -->
+<div class="relative w-[200px] h-[96px] rounded-lg bg-[#4BBF6B] hover:brightness-90 cursor-pointer shadow-[0_1px_0_rgba(9,30,66,0.25)] transition-all p-3">
+<span class="absolute bottom-2 left-3 text-white font-bold text-shadow-sm text-[0.875rem]">Hiring Roadmap</span>
+</div>
+<!-- 9. Create New Board -->
+<div class="w-[200px] h-[96px] rounded-lg bg-[#EBECF0] hover:bg-slate-200 cursor-pointer transition-colors flex items-center justify-center text-slate-600 group">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="add">add</span>
+<span class="text-sm font-medium">Create new board</span>
+</div>
+</div>
+</div>
+<!-- Secondary Section: Templates Preview -->
+<section class="mt-16">
+<header class="mb-6 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface/70" data-icon="dashboard_customize">dashboard_customize</span>
+<h2 class="text-xl font-bold tracking-tight text-on-surface">Most popular templates</h2>
+</div>
+<button class="text-primary font-medium text-sm hover:underline">See all templates</button>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Template Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+<div class="h-32 bg-surface-container-high rounded-lg mb-4 overflow-hidden relative">
+<img alt="Kanban Board" class="w-full h-full object-cover" data-alt="Clean and minimal workspace setup with colorful sticky notes on a wall and a laptop on a white desk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkoSRbtXYoRcEidy9Hp984IiWFxeFk8MJUXKE9Yhoa5EdZLbMs2Mtk8TogSI8bnZoDajHADUfIRbc7ZwabtbIA35w6erSDuMFePq1eRCgzCeyogaFzCSceGyBu0EHXNlK9krh88zWTFbULbtDeifsSkAQeuqBuPPd7SHZpmI7mte3d0hCViB_NgZQNfVyIAv2tbvSXGAWGM8zM-3pFFXadee1YGOXDW-tf0sAQPil4tKLn7LtsyaUi9GYlQ5gPu3B8ekOVBkBQkk4"/>
+</div>
+<h3 class="font-bold text-on-surface mb-1">Kanban Template</h3>
+<p class="text-xs text-on-surface-variant mb-4">A simple template for any type of project management.</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[0.6875rem] font-bold rounded">Project Management</span>
+</div>
+</div>
+<!-- Template Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+<div class="h-32 bg-surface-container-high rounded-lg mb-4 overflow-hidden relative">
+<img alt="Team Brainstorming" class="w-full h-full object-cover" data-alt="Top down view of a team brainstorming session with sketches and diagrams on a large sheet of paper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL7nYWi0hosBgtqBTeP-GIDeI1VclEVERmME81U50CJrcjyWillFG7IPTqnMTRcZNACHNhjpVWlJuHtew5BkrM7FrNljuxHeoHtLd9CbhhFFgiEiv-wa0VIgTcPpib8aH3hWN2UABvLnzaZ6G906_qUgvpECICespEfejXpqIKj8TUqR81FsXpDcynmMvMLziO7Ctq6WxRtZBNdva-PEiuLp91VzlW9P8ltqCt77R7Ik1-mOOwDqyPvcISZK3xT5dWmPFz3bKAppk"/>
+</div>
+<h3 class="font-bold text-on-surface mb-1">Design Sprint</h3>
+<p class="text-xs text-on-surface-variant mb-4">Run a 5-day design sprint to solve big problems.</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-[0.6875rem] font-bold rounded">Design</span>
+</div>
+</div>
+<!-- Template Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow group">
+<div class="h-32 bg-surface-container-high rounded-lg mb-4 overflow-hidden relative">
+<img alt="Remote Team" class="w-full h-full object-cover" data-alt="Digital flat lay of multiple devices showcasing a collaborative project environment for remote teams" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJdE9qXnHkt_6bp5WlUG0xcNsm3dR4yal42AW5xm4yhnn_NVJKreoE1jAdTPISxGsmByOYHFM7DdVeIPLXZ9EAR1qy39bd4dLeV29hpMPMj79ZhlDrtmGkcUjJ51Fe-Xq1GuMb9JeehAMYBDck-5d2GQWGoBCnyYigaA2MjSqTKCjfnShRfBKF5oJ4iErAki2ediUz2qoXjZ4CF9rRGUEkx1ynBCtiyNgYPWAfGTGdISr7blbwXR5Tx3KzE_N4V8IXbgzjBeH5Kgw"/>
+</div>
+<h3 class="font-bold text-on-surface mb-1">Remote Team Hub</h3>
+<p class="text-xs text-on-surface-variant mb-4">Keep your distributed team connected and informed.</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-green-100 text-green-700 text-[0.6875rem] font-bold rounded">Remote Work</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+</body></html>
