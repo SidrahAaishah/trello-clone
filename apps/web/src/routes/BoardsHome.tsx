@@ -9,7 +9,7 @@ export default function BoardsHome() {
   const recent = boards.filter((b) => !b.starred);
 
   return (
-    <div className="h-full overflow-y-auto px-8 py-6">
+    <div className="h-full overflow-y-auto px-4 sm:px-8 py-6">
       {isLoading ? (
         <div className="text-on-surface-variant">Loading boards…</div>
       ) : boards.length === 0 ? (
@@ -40,18 +40,19 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <section>
       <h2 className="text-sm font-semibold text-on-surface mb-3">{title}</h2>
-      <div className="flex flex-wrap gap-4">{children}</div>
+      {/* Responsive grid: 2 columns on mobile, auto-fill with 200px min on larger screens */}
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-4">{children}</div>
     </section>
   );
 }
 
 function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
-    <div className="h-full flex flex-col items-center justify-center text-center p-10">
-      <div className="w-24 h-24 bg-surface-container rounded-lg mb-6 flex items-center justify-center">
-        <span className="material-symbols-outlined text-5xl text-primary">dashboard</span>
+    <div className="h-full flex flex-col items-center justify-center text-center p-6 sm:p-10">
+      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-surface-container rounded-lg mb-6 flex items-center justify-center">
+        <span className="material-symbols-outlined text-4xl sm:text-5xl text-primary">dashboard</span>
       </div>
-      <h1 className="text-xl font-bold text-on-surface mb-2">Welcome to your workspace</h1>
+      <h1 className="text-lg sm:text-xl font-bold text-on-surface mb-2">Welcome to your workspace</h1>
       <p className="text-sm text-on-surface-variant mb-6 max-w-md">
         Create your first board to start tracking tasks. Boards hold lists, lists hold cards,
         cards hold the work.

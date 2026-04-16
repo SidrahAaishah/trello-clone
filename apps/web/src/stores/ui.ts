@@ -11,6 +11,9 @@ interface UIState {
   archivedDrawerOpen: boolean;
   setArchivedDrawerOpen: (v: boolean) => void;
 
+  mobileNavOpen: boolean;
+  setMobileNavOpen: (v: boolean) => void;
+
   filter: {
     query: string;
     labelIds: string[];
@@ -30,6 +33,9 @@ export const useUI = create<UIState>((set) => ({
 
   archivedDrawerOpen: false,
   setArchivedDrawerOpen: (v) => set({ archivedDrawerOpen: v }),
+
+  mobileNavOpen: false,
+  setMobileNavOpen: (v) => set({ mobileNavOpen: v }),
 
   filter: { query: '', labelIds: [], memberIds: [], due: null },
   setFilter: (patch) =>

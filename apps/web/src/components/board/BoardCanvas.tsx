@@ -4,6 +4,7 @@ import {
   DragOverlay,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   closestCorners,
   useSensor,
   useSensors,
@@ -46,7 +47,12 @@ export function BoardCanvas({ boardId, lists }: Props) {
   const filter = useUI((s) => s.filter);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    // Desktop / mouse: small distance threshold to distinguish click from drag
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    // Mobile / touch: require a 250 ms long-press so normal scrolling still works
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 250, tolerance: 8 },
+    }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 

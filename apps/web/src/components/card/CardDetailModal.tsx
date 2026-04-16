@@ -13,9 +13,10 @@ import { Checklist } from './Checklist';
 import { CommentList } from './CommentList';
 import { useUI } from '@/stores/ui';
 import { useCardDetail, useAddChecklist } from '@/hooks/useCard';
-import { useDeleteCard, useUpdateCard, useBoard, useBoardLists } from '@/hooks/useBoard';
+import { useDeleteCard, useUpdateCard, useMoveCard, useBoard, useBoardLists } from '@/hooks/useBoard';
 import { useUsers } from '@/hooks/useUsers';
 import { dueBadgeClasses, dueState, formatDueLong } from '@/utils/due';
+import { positionAfter, POSITION_STEP } from '@/utils/positions';
 import toast from 'react-hot-toast';
 
 export function CardDetailModal({ boardId }: { boardId: string }) {
@@ -29,6 +30,7 @@ export function CardDetailModal({ boardId }: { boardId: string }) {
 
   const updateCard = useUpdateCard(boardId);
   const deleteCard = useDeleteCard(boardId);
+  const moveCard = useMoveCard(boardId);
   const addChecklist = useAddChecklist(card?.id ?? '', boardId);
 
   const [title, setTitle] = useState('');
@@ -53,8 +55,12 @@ export function CardDetailModal({ boardId }: { boardId: string }) {
         <Dialog.Overlay className="fixed inset-0 bg-black/40 z-[60]" />
         <Dialog.Content
           className={clsx(
-            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[70]',
-            'w-[768px] max-w-[94vw] max-h-[90vh] bg-surface rounded-lg shadow-popover overflow-hidden flex flex-col',
+            'fixed z-[70] bg-surface shadow-popover overflow-hidden flex flex-col',
+            // Mobile: full screen
+            'inset-0 rounded-none',
+            // sm+: centered modal
+            'sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg',
+            'sm:w-[768px] sm:max-w-[94vw] sm:max-h-[90vh]',
           )}
         >
           {isLoading || !card ? (
@@ -64,6 +70,7 @@ export function CardDetailModal({ boardId }: { boardId: string }) {
               card={card}
               boardId={boardId}
               candidates={candidates}
+              boardLists={boardLists}
               listTitle={boardLists.find((l) => l.id === card.listId)?.title ?? ''}
               title={title}
               desc={desc}
@@ -149,6 +156,23 @@ export function CardDetailModal({ boardId }: { boardId: string }) {
                   toast.error((err as Error).message);
                 }
               }}
+              onMove={async (targetListId) => {
+                const target = boardLists.find((l) => l.id === targetListId);
+                const cards = (target as any)?.cards ?? [];
+                const position =
+                  cards.length > 0
+                    ? positionAfter(cards[cards.length - 1].position)
+                    : POSITION_STEP;
+                try {
+                  await moveCard.mutateAsync({
+                    cardId: card.id,
+                    input: { listId: targetListId, position },
+                  });
+                  toast.success('Card moved');
+                } catch (err) {
+                  toast.error((err as Error).message);
+                }
+              }}
             />
           )}
         </Dialog.Content>
@@ -161,6 +185,7 @@ interface BodyProps {
   card: CardDetail;
   boardId: string;
   candidates: Member[];
+  boardLists: { id: string; title: string }[];
   listTitle: string;
   title: string;
   desc: string;
@@ -179,11 +204,13 @@ interface BodyProps {
   onDue: (iso: string | null) => void;
   onComplete: (done: boolean) => void;
   onAddChecklist: () => void;
+  onMove: (targetListId: string) => void;
 }
 
 function ModalBody(props: BodyProps) {
   const { card, boardId, candidates } = props;
   const due = dueState(card.dueAt, card.dueComplete);
+  const [moveOpen, setMoveOpen] = useState(false);
 
   return (
     <>
@@ -198,7 +225,7 @@ function ModalBody(props: BodyProps) {
       )}
 
       <div className="flex-1 overflow-y-auto">
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           <header className="flex items-start gap-3">
             <Icon name="description" size={24} className="text-on-surface-variant mt-0.5" />
             <div className="flex-1 min-w-0">
@@ -238,7 +265,7 @@ function ModalBody(props: BodyProps) {
             </button>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-6 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_200px] gap-6 mt-4">
             <div>
               {/* Badges row */}
               {(card.members.length > 0 || card.labels.length > 0 || card.dueAt) && (
@@ -385,6 +412,49 @@ function ModalBody(props: BodyProps) {
               <div className="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant mt-4 mb-1">
                 Actions
               </div>
+
+              {/* Move to list */}
+              <div>
+                <button
+                  onClick={() => setMoveOpen((v) => !v)}
+                  className="w-full flex items-center gap-2 text-sm text-on-surface bg-surface-container hover:bg-surface-container-high rounded-sm px-2 py-1.5"
+                >
+                  <Icon name="open_with" size={18} />
+                  Move to list
+                  <Icon
+                    name={moveOpen ? 'expand_less' : 'expand_more'}
+                    size={16}
+                    className="ml-auto"
+                  />
+                </button>
+                {moveOpen && (
+                  <div className="mt-1 border border-outline rounded-md overflow-hidden bg-white shadow-sm">
+                    <div className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide text-on-surface-variant bg-surface-container">
+                      Choose destination
+                    </div>
+                    {props.boardLists
+                      .filter((l) => l.id !== card.listId)
+                      .map((l) => (
+                        <button
+                          key={l.id}
+                          onClick={() => {
+                            props.onMove(l.id);
+                            setMoveOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-on-surface hover:bg-surface-container-low border-t border-outline first:border-t-0"
+                        >
+                          {l.title}
+                        </button>
+                      ))}
+                    {props.boardLists.filter((l) => l.id !== card.listId).length === 0 && (
+                      <div className="px-3 py-2 text-sm text-on-surface-variant">
+                        No other lists
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <button
                 onClick={props.onArchive}
                 className="w-full flex items-center gap-2 text-sm text-on-surface bg-surface-container hover:bg-surface-container-high rounded-sm px-2 py-1.5"

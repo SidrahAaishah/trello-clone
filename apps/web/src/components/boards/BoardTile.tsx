@@ -22,8 +22,8 @@ export function BoardTile({ board }: Props) {
   return (
     <Link
       to={`/boards/${board.id}`}
-      className="group relative block rounded-md overflow-hidden shadow-card hover:shadow-card-lift transition-shadow"
-      style={{ width: 200, height: 96, ...bgStyle }}
+      className="group relative block rounded-md overflow-hidden shadow-card hover:shadow-card-lift transition-shadow w-full sm:w-[200px] h-24"
+      style={bgStyle}
     >
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
       <div className="relative z-10 p-2 flex flex-col justify-between h-full text-white">
@@ -41,10 +41,7 @@ export function BoardTile({ board }: Props) {
           <Icon
             name="star"
             size={18}
-            className={clsx(
-              'drop-shadow',
-              board.starred && 'text-yellow-300',
-            )}
+            className={clsx('drop-shadow', board.starred && 'text-yellow-300')}
           />
         </button>
         {board.starred && (
@@ -61,8 +58,7 @@ export function BoardAddTile({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-center rounded-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-medium"
-      style={{ width: 200, height: 96 }}
+      className="flex items-center justify-center rounded-md bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors text-sm font-medium w-full sm:w-[200px] h-24"
     >
       Create new board
     </button>

@@ -1,14 +1,24 @@
-import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { Icon } from '@/components/common/Icon';
 import { useBoards } from '@/hooks/useBoards';
+import { useUI } from '@/stores/ui';
 
 export function SideNav() {
   const { data: boards = [] } = useBoards();
   const starred = boards.filter((b) => b.starred);
+  const mobileNavOpen = useUI((s) => s.mobileNavOpen);
+  const setMobileNavOpen = useUI((s) => s.setMobileNavOpen);
+  const location = useLocation();
 
-  return (
-    <aside className="fixed left-0 top-12 bottom-0 w-[260px] hidden md:flex flex-col p-3 border-r border-outline bg-white z-40 overflow-y-auto">
+  // Close mobile nav on route change
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [location.pathname, location.search, setMobileNavOpen]);
+
+  const navContent = (
+    <>
       <div className="flex items-center gap-3 px-3 py-2 mb-4">
         <div className="w-8 h-8 bg-primary-container rounded flex items-center justify-center text-white font-bold">
           W
@@ -20,9 +30,9 @@ export function SideNav() {
       </div>
 
       <nav className="flex-grow">
-        <NavItem to="/boards" icon="dashboard" label="Boards" />
-        <NavItem to="/boards" icon="dashboard_customize" label="Templates" />
-        <NavItem to="/boards" icon="home" label="Home" />
+        <NavItem to="/boards" icon="dashboard" label="Boards" onClick={() => setMobileNavOpen(false)} />
+        <NavItem to="/boards" icon="dashboard_customize" label="Templates" onClick={() => setMobileNavOpen(false)} />
+        <NavItem to="/boards" icon="home" label="Home" onClick={() => setMobileNavOpen(false)} />
 
         {starred.length > 0 && (
           <div className="mt-6">
@@ -34,6 +44,7 @@ export function SideNav() {
                 <NavLink
                   key={b.id}
                   to={`/boards/${b.id}`}
+                  onClick={() => setMobileNavOpen(false)}
                   className={({ isActive }) =>
                     clsx(
                       'px-3 py-2 my-0.5 flex items-center gap-3 rounded-md transition-colors text-sm',
@@ -44,7 +55,7 @@ export function SideNav() {
                   }
                 >
                   <span
-                    className="w-5 h-5 rounded"
+                    className="w-5 h-5 rounded flex-shrink-0"
                     style={{
                       backgroundColor:
                         b.background.type === 'color' ? b.background.value : undefined,
@@ -63,18 +74,57 @@ export function SideNav() {
       </nav>
 
       <div className="mt-auto border-t border-outline pt-4">
-        <NavItem to="/boards" icon="settings" label="Settings" />
-        <NavItem to="/boards" icon="group" label="Members" />
+        <NavItem to="/boards" icon="settings" label="Settings" onClick={() => setMobileNavOpen(false)} />
+        <NavItem to="/boards" icon="group" label="Members" onClick={() => setMobileNavOpen(false)} />
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar — always visible on md+ */}
+      <aside className="fixed left-0 top-12 bottom-0 w-[260px] hidden md:flex flex-col p-3 border-r border-outline bg-white z-40 overflow-y-auto">
+        {navContent}
+      </aside>
+
+      {/* Mobile backdrop */}
+      {mobileNavOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-[45] bg-black/40"
+          onClick={() => setMobileNavOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Mobile slide-in drawer */}
+      <aside
+        className={clsx(
+          'md:hidden fixed left-0 top-12 bottom-0 w-[280px] flex flex-col p-3 border-r border-outline bg-white z-[46] overflow-y-auto transition-transform duration-300',
+          mobileNavOpen ? 'translate-x-0' : '-translate-x-full',
+        )}
+      >
+        {navContent}
+      </aside>
+    </>
   );
 }
 
-function NavItem({ to, icon, label }: { to: string; icon: string; label: string }) {
+function NavItem({
+  to,
+  icon,
+  label,
+  onClick,
+}: {
+  to: string;
+  icon: string;
+  label: string;
+  onClick?: () => void;
+}) {
   return (
     <NavLink
       to={to}
       end
+      onClick={onClick}
       className={({ isActive }) =>
         clsx(
           'px-3 py-2 my-1 flex items-center gap-3 rounded-md transition-colors text-sm',

@@ -8,6 +8,8 @@ export default function AppShell() {
     <div className="h-full">
       <TopNav />
       <SideNav />
+      {/* On mobile: no left padding (SideNav is a drawer overlay) */}
+      {/* On md+: offset for the fixed 260px sidebar */}
       <main className="pt-12 md:pl-[260px] h-full flex flex-col">
         <Outlet />
       </main>
